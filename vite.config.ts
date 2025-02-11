@@ -43,6 +43,15 @@ export default defineConfig(async () => {
         title: '買えるオーガニック',
         videos,
       }),
+      {
+        name: 'add-defer-to-scripts',
+        transformIndexHtml(html) {
+          return html.replace(
+            /<script.*src=".*\.js"><\/script>/g,
+            (match) => match.replace('<script', '<script defer')
+          );
+        },
+      },
     ],
   };
 });
