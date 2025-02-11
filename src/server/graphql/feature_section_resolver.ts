@@ -3,8 +3,8 @@ import type { FeatureSection } from '../../model/feature_section';
 import { dataSource } from '../data_source';
 
 import type { GraphQLModelResolver } from './model_resolver';
-
-export const featureSectionResolver: GraphQLModelResolver<FeatureSection> = {
+/*
+const _featureSectionResolver: GraphQLModelResolver<FeatureSection> = {
   items: (parent) => {
     return dataSource.manager.find(FeatureItem, {
       relations: {
@@ -14,5 +14,16 @@ export const featureSectionResolver: GraphQLModelResolver<FeatureSection> = {
         section: parent,
       },
     });
+  },
+};
+*/
+export const featureSectionResolver: GraphQLModelResolver<FeatureSection> = {
+  items: async(parent) => {
+    return await dataSource.manager
+    .createQueryBuilder(FeatureItem, 'featureItem')
+    .leftJoinAndSelect('featureItem.product', 'product')
+    .leftJoinAndSelect('product.media', 'media')
+    .where('featureItem.sectionId = :sectionId', { sectionId: parent.id })
+    .getMany();
   },
 };
