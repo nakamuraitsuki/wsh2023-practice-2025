@@ -1,12 +1,22 @@
-import { useSuspenseQuery_experimental as useSuspenseQuery } from '@apollo/client';
-
+import { useQuery } from '@apollo/client';
 import type { GetFeatureSectionsQueryResponse } from '../graphql/queries';
 import { GetFeatureSectionsQuery } from '../graphql/queries';
 
 export const useFeatures = () => {
-  const featuresResult = useSuspenseQuery<GetFeatureSectionsQueryResponse>(GetFeatureSectionsQuery);
+  const { data, loading, error } = useQuery<GetFeatureSectionsQueryResponse>(GetFeatureSectionsQuery);
 
-  const features = featuresResult.data?.features;
+  if (loading) {
+    // ローディング中の処理（例：スピナー表示など）
+    return { loading: true };
+  }
+
+  if (error) {
+    // エラーが発生した場合の処理
+    console.error(error);
+    return { error: error.message };
+  }
+
+  const features = data?.features;
 
   return { features };
 };
