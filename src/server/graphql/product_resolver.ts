@@ -9,7 +9,6 @@ import { GraphQLModelResolver } from './model_resolver';
 
 // バッチ処理関数
 const batchGetProductMedia = async (products: readonly Product[]) => {
-  console.log("batchGetFeatureItems");
   const productIds = products.map(product => product.id);
   const medias = await dataSource.manager.find(ProductMedia, {
     where: {
@@ -23,7 +22,6 @@ const batchGetProductMedia = async (products: readonly Product[]) => {
 
   const mediaMap = new Map<number, ProductMedia[]>();
   medias.forEach(media => {
-    console.log("media",media);
     if (!mediaMap.has(media.product.id)) {
       mediaMap.set(media.product.id, []);
     }
@@ -84,7 +82,6 @@ const productReviewsLoader = new DataLoader(batchGetProductReviews);
 
 export const productResolver: GraphQLModelResolver<Product> = {
   media: (parent) => {
-    console.log("media_parent",parent);
     return productMediaLoader.load(parent);
   },
   offers: (parent) => {
