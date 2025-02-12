@@ -6,6 +6,7 @@ import { ViteEjsPlugin } from 'vite-plugin-ejs';
 import topLevelAwait from 'vite-plugin-top-level-await';
 import wasm from 'vite-plugin-wasm';
 import { visualizer } from 'rollup-plugin-visualizer';
+import viteImagemin from 'vite-plugin-imagemin';
 
 import { getFileList } from './tools/get_file_list';
 
@@ -48,6 +49,31 @@ export default defineConfig(async () => {
         module: '/src/client/index.tsx',
         title: '買えるオーガニック',
         videos,
+      }),
+      viteImagemin({
+        gifsicle: {
+          optimizationLevel: 3,
+        },
+        mozjpeg: {
+          quality: 80,
+        },
+        optipng: {
+          optimizationLevel: 5,
+        },
+        pngquant: {
+          quality: [0.65, 0.8],
+          speed: 4,
+        },
+        svgo: {
+          plugins: [
+            {
+              name: 'removeViewBox',
+            },
+            {
+              name: 'removeDimensions',
+            },
+          ],
+        },
       }),
       {
         name: 'add-defer-to-scripts',
