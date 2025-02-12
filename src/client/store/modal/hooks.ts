@@ -1,26 +1,26 @@
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 
 import type { ModalKey } from './state';
 import { modalState } from './state';
 
-export const useIsOpenModal = (key: ModalKey) => {
-  const modalKey = useRecoilValue(modalState);
-
+// useIsOpenModal フック
+export const useIsOpenModal = (key: ModalKey): boolean => {
+  const [modalKey] = useAtom(modalState); // useRecoilValueの代わりにuseAtom
   return modalKey === key;
 };
 
+// useOpenModal フック
 export const useOpenModal = () => {
-  const setModal = useSetRecoilState(modalState);
-
+  const [, setModal] = useAtom(modalState); // useSetRecoilStateの代わりにuseAtom
   return (key: ModalKey) => {
-    setModal(key);
+    setModal(key); // モーダルを開く
   };
 };
 
+// useCloseModal フック
 export const useCloseModal = () => {
-  const setModal = useSetRecoilState(modalState);
-
+  const [, setModal] = useAtom(modalState); // useSetRecoilStateの代わりにuseAtom
   return () => {
-    setModal(undefined);
+    setModal(undefined); // モーダルを閉じる
   };
 };
