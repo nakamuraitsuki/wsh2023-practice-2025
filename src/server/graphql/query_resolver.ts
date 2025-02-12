@@ -17,6 +17,7 @@ type QueryResolver = {
 
 export const queryResolver: QueryResolver = {
   features: async() => {
+    console.time("Query Execution");
     const res = await dataSource.manager
       .createQueryBuilder(FeatureSection, 'section')
       .leftJoinAndSelect('section.items', 'item')
@@ -24,7 +25,8 @@ export const queryResolver: QueryResolver = {
       .leftJoinAndSelect('product.media', 'media')
       .leftJoinAndSelect('product.offers', 'offers')
       .leftJoinAndSelect('media.file', 'file')
-      .getMany();  // FeatureSectionをその関連項目（FeatureItem, Product, Media, Offersなど）と一緒に取得
+      .getMany();
+    console.timeEnd("Query Execution");    
     return res;
   },
   

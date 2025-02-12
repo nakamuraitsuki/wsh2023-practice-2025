@@ -13,11 +13,17 @@ import { WidthRestriction } from '../../foundation/WidthRestriction';
 
 import * as styles from './ProductHeroImage.styles';
 
+// グローバルなCanvasKitインスタンスをキャッシュ
+let CanvasKit: any = null;
+
 async function loadImageAsDataURL(url: string): Promise<string> {
-  const CanvasKit = await CanvasKitInit({
-    // WASM ファイルの URL を渡す
-    locateFile: () => CanvasKitWasmUrl,
-  });
+  if (!CanvasKit) {
+    // WASMの読み込みは1度だけ行う
+    CanvasKit = await CanvasKitInit({
+      // WASM ファイルの URL を渡す
+      locateFile: () => CanvasKitWasmUrl,
+    });
+  }
 
   // 画像を読み込む
   const data = await fetch(url).then((res) => res.arrayBuffer());
@@ -30,7 +36,6 @@ async function loadImageAsDataURL(url: string): Promise<string> {
   // 画像を Canvas に描画して Data URL を生成する
   const canvas = CanvasKit.MakeCanvas(image.width(), image.height());
   const ctx = canvas.getContext('2d');
-  // @ts-expect-error ...
   ctx?.drawImage(image, 0, 0);
   return canvas.toDataURL();
 }
