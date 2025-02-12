@@ -25,7 +25,6 @@ export const queryResolver: QueryResolver = {
       .leftJoinAndSelect('product.offers', 'offers')
       .leftJoinAndSelect('media.file', 'file')
       .getMany();  // FeatureSectionをその関連項目（FeatureItem, Product, Media, Offersなど）と一緒に取得
-      console.log("res",res);
     return res;
   },
   
