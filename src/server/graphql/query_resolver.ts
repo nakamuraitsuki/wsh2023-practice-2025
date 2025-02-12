@@ -16,9 +16,19 @@ type QueryResolver = {
 };
 
 export const queryResolver: QueryResolver = {
-  features: () => {
-    return dataSource.manager.find(FeatureSection);
+  features: async() => {
+    const res = await dataSource.manager
+      .createQueryBuilder(FeatureSection, 'section')
+      .leftJoinAndSelect('section.items', 'item')
+      .leftJoinAndSelect('item.product', 'product')
+      .leftJoinAndSelect('product.media', 'media')
+      .leftJoinAndSelect('product.offers', 'offers')
+      .leftJoinAndSelect('media.file', 'file')
+      .getMany();  // FeatureSectionをその関連項目（FeatureItem, Product, Media, Offersなど）と一緒に取得
+      console.log("res",res);
+    return res;
   },
+  
   me: async (_parent, _args, { session }) => {
     if (session['userId'] == null) {
       return null;
@@ -32,8 +42,16 @@ export const queryResolver: QueryResolver = {
       where: { id: args.id },
     });
   },
-  recommendations: () => {
-    return dataSource.manager.find(Recommendation);
+  recommendations: async () => {
+    const res = await dataSource.manager
+      .createQueryBuilder(Recommendation, 'recommendation')
+      .leftJoinAndSelect('recommendation.product', 'product')
+      .leftJoinAndSelect('product.media', 'media')
+      .leftJoinAndSelect('product.offers', 'offers')
+      .leftJoinAndSelect('media.file', 'file')
+      .getMany();  // Recommendationをその関連項目（Product, Media, Offersなど）と一緒に取得
+    console.log("res", res);
+    return res;
   },
   user: (_parent, args) => {
     return dataSource.manager.findOneOrFail(User, {
