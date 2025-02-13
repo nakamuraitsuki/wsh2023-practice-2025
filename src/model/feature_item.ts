@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryGeneratedColumn, type Relation } from 'typeorm';
+import { Entity, ManyToOne, PrimaryGeneratedColumn, Index, type Relation } from 'typeorm';
 
 import { FeatureSection } from './feature_section';
 import { Product } from './product';

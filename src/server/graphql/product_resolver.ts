@@ -1,4 +1,3 @@
-import { In } from 'typeorm';
 import { LimitedTimeOffer } from '../../model/limited_time_offer';
 import type { Product } from '../../model/product';
 import { ProductMedia } from '../../model/product_media';
