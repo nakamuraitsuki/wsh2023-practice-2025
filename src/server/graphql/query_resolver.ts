@@ -44,14 +44,9 @@ export const queryResolver: QueryResolver = {
     });
   },
   recommendations: async () => {
-    const res = await dataSource.manager
-      .createQueryBuilder(Recommendation, 'recommendation')
-      .leftJoinAndSelect('recommendation.product', 'product')
-      .leftJoinAndSelect('product.media', 'media')
-      .leftJoinAndSelect('product.offers', 'offers')
-      .leftJoinAndSelect('media.file', 'file')
-      .getMany();  // Recommendationをその関連項目（Product, Media, Offersなど）と一緒に取得
-    console.log("res", res);
+    const res = await dataSource.manager.find(Recommendation, {
+      relations: { product: true },
+    });
     return res;
   },
   user: (_parent, args) => {
