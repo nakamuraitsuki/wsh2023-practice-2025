@@ -1,4 +1,4 @@
-import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn, type Relation } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, type Relation } from 'typeorm';
 
 import { MediaFile } from './media_file';
 import { Product } from './product';
@@ -8,11 +8,9 @@ export class ProductMedia {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Index()
   @ManyToOne(() => Product)
   product!: Relation<Product>;
 
-  @Index()
   @ManyToOne(() => MediaFile)
   file!: Relation<MediaFile>;
 
