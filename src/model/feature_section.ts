@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, type Relation } from 'typeorm';
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn, type Relation } from 'typeorm';
 
 import { FeatureItem } from './feature_item';
 
@@ -10,6 +10,7 @@ export class FeatureSection {
   @Column()
   title!: string;
 
+  @Index()
   @OneToMany(() => FeatureItem, (item) => item.section, {eager: true})
   items!: Relation<FeatureItem[]>;
 }
