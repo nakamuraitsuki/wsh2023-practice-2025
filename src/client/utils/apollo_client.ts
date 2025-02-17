@@ -17,6 +17,14 @@ const asyncXhr: HttpOptions['fetch'] = (uri, options) => {
     request.open(method, uri.toString(), true); // 非同期に変更
     request.setRequestHeader('content-type', 'application/json');
     
+    // タイムアウト設定 (例: 30秒)
+    request.timeout = 30000; // ミリ秒単位 (30秒)
+
+    // タイムアウトエラーの処理
+    request.ontimeout = () => {
+      reject(new Error('Request timed out'));
+    };
+
     request.onload = () => {
       if (request.status >= 200 && request.status < 300) {
         return resolve(new Response(request.response));
