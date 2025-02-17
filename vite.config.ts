@@ -7,6 +7,7 @@ import topLevelAwait from 'vite-plugin-top-level-await';
 import wasm from 'vite-plugin-wasm';
 import { visualizer } from 'rollup-plugin-visualizer';
 import viteImagemin from 'vite-plugin-imagemin';
+import viteCompress from 'vite-plugin-compress';
 
 import { getFileList } from './tools/get_file_list';
 
@@ -74,15 +75,10 @@ export default defineConfig(async () => {
           quality: 80,
         }
       }),
-      {
-        name: 'add-defer-to-scripts',
-        transformIndexHtml(html) {
-          return html.replace(
-            /<script.*src=".*\.js"><\/script>/g,
-            (match) => match.replace('<script', '<script defer')
-          );
-        },
-      },
+      viteCompress({  // 追加した圧縮プラグイン
+        verbose: true, // 圧縮の詳細情報を表示する
+        threshold: 10240, // 10KB以上のファイルを圧縮
+      }),
     ],
   };
 });
