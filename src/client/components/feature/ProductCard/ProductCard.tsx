@@ -16,6 +16,7 @@ type Props = {
 
 export const ProductCard: FC<Props> = ({ product }) => {
   const thumbnailFile = product.media.find((productMedia) => productMedia.isThumbnail)?.file;
+  const thumbnailFileNameWebp = thumbnailFile?.filename?.replace(/\.(jpg|jpeg|png)$/i, '.webp');
 
   const { activeOffer } = useActiveOffer(product);
   const price = activeOffer?.price ?? product.price;
@@ -23,10 +24,10 @@ export const ProductCard: FC<Props> = ({ product }) => {
   return (
     <Anchor href={`/product/${product.id}`}>
       <div className={styles.inner()}>
-        {thumbnailFile ? (
+        {thumbnailFileNameWebp ? (
           <div className={styles.image()}>
             <AspectRatio ratioHeight={9} ratioWidth={16}>
-              <Image height={126} src={thumbnailFile.filename} width={224} loading='lazy'/>
+              <Image height={126} src={thumbnailFileNameWebp} width={224} loading='lazy'/>
             </AspectRatio>
           </div>
         ) : null}

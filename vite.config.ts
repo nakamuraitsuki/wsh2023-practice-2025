@@ -25,7 +25,7 @@ export default defineConfig(async () => {
 
   return {
     build: {
-      assetsInlineLimit: 20480,
+      assetsInlineLimit: 0,
       cssCodeSplit: true,
       cssTarget: 'es6',
       minify: true,
@@ -66,14 +66,13 @@ export default defineConfig(async () => {
         },
         svgo: {
           plugins: [
-            {
-              name: 'removeViewBox',
-            },
-            {
-              name: 'removeDimensions',
-            },
+            { removeViewBox: false },
+            { cleanupIDs: false },
           ],
         },
+        webp: {
+          quality: 80,
+        }
       }),
       {
         name: 'add-defer-to-scripts',
