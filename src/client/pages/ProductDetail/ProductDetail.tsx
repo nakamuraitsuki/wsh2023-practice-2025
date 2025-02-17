@@ -36,7 +36,7 @@ export const ProductDetail: FC = () => {
     sendReview({
       variables: {
         comment,
-        productId: Number(productId),
+        productId: Number(productId??1),
       },
     });
   };
