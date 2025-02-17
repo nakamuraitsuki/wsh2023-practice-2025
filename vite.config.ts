@@ -55,14 +55,14 @@ export default defineConfig(async () => {
           optimizationLevel: 3,
         },
         mozjpeg: {
-          quality: 80,
+          quality: 70,
         },
         optipng: {
-          optimizationLevel: 5,
+          optimizationLevel: 3,
         },
         pngquant: {
           quality: [0.65, 0.8],
-          speed: 4,
+          speed: 10,
         },
         svgo: {
           plugins: [
@@ -71,18 +71,9 @@ export default defineConfig(async () => {
           ],
         },
         webp: {
-          quality: 80,
+          quality: 70,
         }
       }),
-      {
-        name: 'add-defer-to-scripts',
-        transformIndexHtml(html) {
-          return html.replace(
-            /<script.*src=".*\.js"><\/script>/g,
-            (match) => match.replace('<script', '<script defer')
-          );
-        },
-      },
     ],
   };
 });
