@@ -25,9 +25,9 @@ const link = new HttpLink({ fetch: asyncFetch });
 
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
-  connectToDevTools: true,
+  connectToDevTools: false,
   link,
-  queryDeduplication: false,
+  queryDeduplication: true,
   uri: '/graphql',
 });
 
