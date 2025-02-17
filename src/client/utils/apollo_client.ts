@@ -1,62 +1,34 @@
 import type { HttpOptions } from '@apollo/client';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 
-const asyncXhr: HttpOptions['fetch'] = (uri, options) => {
-  return new Promise((resolve, reject) => {
-    const method = options?.method;
-    if (method === undefined) {
-      return reject(new Error('Method is undefined'));
+const asyncFetch: HttpOptions['fetch'] = async (uri, options) => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // タイムアウト設定
+
+  try {
+    const response = await fetch(uri.toString(), {
+      ...options,
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+    if (!response.ok) {
+      throw new Error('Request failed');
     }
-
-    const body = options?.body;
-    if (body instanceof ReadableStream) {
-      return reject(new Error('Body cannot be a ReadableStream'));
-    }
-
-    const request = new XMLHttpRequest();
-    request.open(method, uri.toString(), true); // 非同期に変更
-    request.setRequestHeader('content-type', 'application/json');
-    
-    // タイムアウト設定 (例: 30秒)
-    request.timeout = 30000; // ミリ秒単位 (30秒)
-
-    // タイムアウトエラーの処理
-    request.ontimeout = () => {
-      reject(new Error('Request timed out'));
-    };
-
-    request.onload = () => {
-      if (request.status >= 200 && request.status < 300) {
-        return resolve(new Response(request.response));
-      }
-      reject(new Error('Request failed'));
-    };
-
-    request.onerror = () => {
-      reject(new Error('Request failed'));
-    };
-
-    request.send(body);
-  });
+    return response;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    throw error;
+  }
 };
 
-const link = new HttpLink({ fetch: asyncXhr });
+const link = new HttpLink({ fetch: asyncFetch });
 
-export const apolloClient = new ApolloClient({
+const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
   connectToDevTools: true,
-  defaultOptions: {
-    mutate: {
-      fetchPolicy: 'network-only',
-    },
-    query: {
-      fetchPolicy: 'network-only',
-    },
-    watchQuery: {
-      fetchPolicy: 'network-only',
-    },
-  },
   link,
   queryDeduplication: false,
   uri: '/graphql',
 });
+
+export { apolloClient };
