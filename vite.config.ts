@@ -25,7 +25,7 @@ export default defineConfig(async () => {
 
   return {
     build: {
-      assetsInlineLimit: 0,
+      assetsInlineLimit: 100000,
       cssCodeSplit: true,
       cssTarget: 'es6',
       minify: true,
