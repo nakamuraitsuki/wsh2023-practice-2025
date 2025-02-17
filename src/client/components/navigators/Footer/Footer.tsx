@@ -28,7 +28,7 @@ export const Footer: FC = () => {
               ))}
             </ul>
             <NavLink to="/">
-              <Image src="/icons/logo.svg" loading='lazy'/>
+              <Image src="/icons/logo.svg"/>
             </NavLink>
           </footer>
         );
