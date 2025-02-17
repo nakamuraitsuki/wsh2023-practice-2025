@@ -7,6 +7,7 @@ import topLevelAwait from 'vite-plugin-top-level-await';
 import wasm from 'vite-plugin-wasm';
 import { visualizer } from 'rollup-plugin-visualizer';
 import viteImagemin from 'vite-plugin-imagemin';
+import compression from 'vite-plugin-compression';
 
 import { getFileList } from './tools/get_file_list';
 
@@ -73,6 +74,11 @@ export default defineConfig(async () => {
         webp: {
           quality: 80,
         }
+      }),
+      compression({
+        algorithm: 'brotliCompress', // 'gzip' も使用可能
+        ext: '.br', // 拡張子（'.gz' にすれば gzip）
+        threshold: 1024, // 1KB 以上のファイルのみ圧縮
       }),
       {
         name: 'add-defer-to-scripts',
