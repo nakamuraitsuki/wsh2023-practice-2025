@@ -10,6 +10,10 @@ type Props = {
   reviews: ReviewFragmentResponse[];
 };
 
+const getWebpImageSrc = (filename: string) => {
+  return filename.replace(/\.(jpg|jpeg|png|gif)$/i, '.webp');
+};
+
 export const ReviewList: FC<Props> = ({ reviews }) => {
   if (reviews.length === 0) {
     return null;
@@ -31,7 +35,7 @@ export const ReviewList: FC<Props> = ({ reviews }) => {
           <li key={review.id} className={styles.item()} data-testid="review-list-item">
             <div className={styles.avaterImage()}>
               <AspectRatio ratioHeight={1} ratioWidth={1}>
-                <Image height={52} src={review.user.profile.avatar.filename} width={52} />
+                <Image height={52} src={getWebpImageSrc(review.user.profile.avatar.filename)} width={52} />
               </AspectRatio>
             </div>
             <div className={styles.content()}>

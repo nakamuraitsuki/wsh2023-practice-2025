@@ -25,6 +25,10 @@ export const CartItem: FC<Props> = ({ item, onRemove, onUpdate }) => {
   const { activeOffer } = useActiveOffer(item.product);
   const price = activeOffer?.price ?? item.product.price;
 
+  const getWebpImageSrc = (filename: string) => {
+    return filename.replace(/\.(jpg|jpeg|png|gif)$/i, '.webp');
+  };
+
   const updateCount: ChangeEventHandler<HTMLInputElement> = (ev) => {
     const count = normalizeCartItemCount(ev.target.valueAsNumber || 1);
     onUpdate(item.product.id, count);
@@ -51,7 +55,7 @@ export const CartItem: FC<Props> = ({ item, onRemove, onUpdate }) => {
                       })}
                     >
                       <AspectRatio ratioHeight={9} ratioWidth={16}>
-                        <Image fill src={thumbnailFile.filename} />
+                        <Image fill src={getWebpImageSrc(thumbnailFile.filename)} />
                       </AspectRatio>
                       {activeOffer !== undefined && (
                         <div className={styles.offerLabel()}>
