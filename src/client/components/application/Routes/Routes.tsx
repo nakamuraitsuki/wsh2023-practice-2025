@@ -15,7 +15,6 @@ export const Routes: FC = () => {
   useScrollToTop();
 
   return (
-    <Suspense fallback={null}>
       <Router.Routes>
         <Router.Route element={<Top />} path="/" />
         <Router.Route element={<ProductDetail />} path="/product/:productId" />
@@ -23,6 +22,5 @@ export const Routes: FC = () => {
         <Router.Route element={<OrderComplete />} path="/order/complete" />
         <Router.Route element={<NotFound />} path="*" />
       </Router.Routes>
-    </Suspense>
   );
 };
