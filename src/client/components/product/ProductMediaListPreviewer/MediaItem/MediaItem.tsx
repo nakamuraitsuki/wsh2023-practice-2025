@@ -13,6 +13,10 @@ type Props = {
   file: MediaFileFragmentResponse;
 };
 
+const getWebpImageSrc = (filename: string) => {
+  return filename.replace(/\.(jpg|jpeg|png|gif)$/i, '.webp');
+};
+
 export const MediaItem: FC<Props> = ({ file }) => {
   const [imageSrc, setImageSrc] = useState<string>();
   const mediaType = getMediaType(file.filename);
@@ -30,7 +34,7 @@ export const MediaItem: FC<Props> = ({ file }) => {
 
   return (
     <div className={styles.container()}>
-      <Image fill src={imageSrc} />
+      <Image fill src={getWebpImageSrc(imageSrc)} />
       {mediaType === 'video' && (
         <div className={styles.playIcon()}>
           <Icon color="#ffffff" height={16} type="FaPlay" width={16} />

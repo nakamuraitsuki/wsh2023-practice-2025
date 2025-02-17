@@ -12,12 +12,16 @@ type Props = {
   file: MediaFileFragmentResponse;
 };
 
+const getWebpImageSrc = (filename: string) => {
+  return filename.replace(/\.(jpg|jpeg|png|gif)$/i, '.webp');
+};
+
 export const MediaItemPreviewer: FC<Props> = ({ file }) => {
   const type = getMediaType(file.filename);
 
   return (
     <div className={styles.container()}>
-      {type === 'image' && <Image fill src={file.filename} />}
+      {type === 'image' && <Image fill src={getWebpImageSrc(file.filename)} />}
       {type === 'video' && (
         <GetDeviceType>
           {({ deviceType }) => (
