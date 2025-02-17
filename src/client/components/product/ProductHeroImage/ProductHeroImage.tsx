@@ -18,8 +18,32 @@ type Props = {
 export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
   const thumbnailFile = product.media.find((productMedia) => productMedia.isThumbnail)?.file;
 
+  
   if (!thumbnailFile) {
-    return null;
+    return (
+      <GetDeviceType>
+        {({ deviceType }) => (
+          <WidthRestriction>
+            <div className={styles.container()}>
+              <AspectRatio ratioHeight={9} ratioWidth={16}>
+                {/* アスペクト比の空白だけ表示 */}
+                <div style={{ backgroundColor: '#f0f0f0', height: '100%' }} />
+              </AspectRatio>
+              <div className={styles.overlay()}>
+                <p
+                  className={classNames(styles.title(), {
+                    [styles.title__desktop()]: deviceType === DeviceType.DESKTOP,
+                    [styles.title__mobile()]: deviceType === DeviceType.MOBILE,
+                  })}
+                >
+                  {title}
+                </p>
+              </div>
+            </div>
+          </WidthRestriction>
+        )}
+      </GetDeviceType>
+    );
   }
 
   const imageUrl = thumbnailFile.filename.replace(/\.(jpg|jpeg|png)$/i, '.webp');
