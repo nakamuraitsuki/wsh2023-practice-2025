@@ -59,6 +59,6 @@ export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
       }}
     </GetDeviceType>
   );
-}, (prevProps, nextProps) => prevProps.product.id === nextProps.product.id);
+});
 
 ProductHeroImage.displayName = 'ProductHeroImage';
