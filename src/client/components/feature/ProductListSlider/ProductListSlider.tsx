@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import { FixedSizeList as List, ListChildComponentProps } from 'react-window';
 import type { FC } from 'react';
 
 import type { FeatureSectionFragmentResponse } from '../../../graphql/fragments';
@@ -16,12 +15,9 @@ type Props = {
 export const ProductListSlider: FC<Props> = ({ featureSection }) => {
   const products = featureSection.items.map((item) => item.product);
 
-  const { setSlideIndex, slideIndex, visibleItemCount } = useSlider({
+  const { containerElementRef, setSlideIndex, slideIndex, visibleItemCount } = useSlider({
     items: products,
   });
-
-  const itemWidth = 200; // 1アイテムの幅 (仮)
-  const listWidth = itemWidth * visibleItemCount;
 
   return (
     <div className={styles.container()}>
@@ -32,21 +28,22 @@ export const ProductListSlider: FC<Props> = ({ featureSection }) => {
           onClick={() => setSlideIndex(slideIndex - visibleItemCount)}
         />
       </div>
-      <div className={styles.listWrapper()} style={{ width: listWidth }}>
-        <List
-          height={250} // リストの高さ (仮)
-          itemCount={products.length}
-          itemSize={itemWidth}
-          layout="horizontal"
-          width={listWidth}
-          initialScrollOffset={slideIndex * itemWidth}
-        >
-          {({ index, style }: ListChildComponentProps) => (
-            <div style={style} className={styles.item()}>
-              <ProductCard product={products[index]} />
-            </div>
-          )}
-        </List>
+      <div className={styles.listWrapper()}>
+        <ul ref={containerElementRef} className={styles.list({ slideIndex, visibleItemCount })}>
+          {products.map((product, index) => {
+            const hidden = index < slideIndex || slideIndex + visibleItemCount <= index;
+            return (
+              <li
+                key={product.id}
+                className={classNames(styles.item(), {
+                  [styles.item__hidden()]: hidden,
+                })}
+              >
+                <ProductCard product={product} />
+              </li>
+            );
+          })}
+        </ul>
       </div>
       <div className={styles.slideButton()}>
         <ProductListSlideButton
@@ -58,4 +55,3 @@ export const ProductListSlider: FC<Props> = ({ featureSection }) => {
     </div>
   );
 };
-

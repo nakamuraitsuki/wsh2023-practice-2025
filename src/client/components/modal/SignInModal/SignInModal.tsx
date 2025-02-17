@@ -1,5 +1,9 @@
-import { useState } from 'react';
+import type { FormikErrors } from 'formik';
 import { useFormik } from 'formik';
+import type { FC } from 'react';
+import { useState } from 'react';
+import * as z from 'zod';
+
 import { useSignIn } from '../../../hooks/useSignIn';
 import { useCloseModal, useIsOpenModal, useOpenModal } from '../../../store/modal';
 import { Modal } from '../../foundation/Modal';
@@ -11,12 +15,17 @@ import * as styles from './SignInModal.styles';
 const NOT_INCLUDED_AT_CHAR_REGEX = /^(?:[^@]*){6,}$/;
 const NOT_INCLUDED_SYMBOL_CHARS_REGEX = /^(?:(?:[a-zA-Z0-9]*){2,})+$/;
 
+// NOTE: 文字列に @ が含まれているか確認する
+const emailSchema = z.string().refine((v) => !NOT_INCLUDED_AT_CHAR_REGEX.test(v));
+// NOTE: 文字列に英数字以外の文字が含まれているか確認する
+const passwordSchema = z.string().refine((v) => !NOT_INCLUDED_SYMBOL_CHARS_REGEX.test(v));
+
 export type SignInForm = {
   email: string;
   password: string;
 };
 
-export const SignInModal = () => {
+export const SignInModal: FC = () => {
   const isOpened = useIsOpenModal('SIGN_IN');
   const { signIn } = useSignIn();
 
@@ -24,8 +33,6 @@ export const SignInModal = () => {
   const handleCloseModal = useCloseModal();
 
   const [submitError, setSubmitError] = useState<Error | null>(null);
-  
-  // Formikでフォームとバリデーションを管理
   const formik = useFormik<SignInForm>({
     initialValues: {
       email: '',
@@ -46,18 +53,14 @@ export const SignInModal = () => {
         setSubmitError(err as Error);
       }
     },
-    // Formikのvalidate関数内でバリデーションを記述
     validate(values) {
-      const errors: { email?: string; password?: string } = {};
-
-      if (values.email !== '' && NOT_INCLUDED_AT_CHAR_REGEX.test(values.email)) {
-        errors.email = 'メールアドレスに@が含まれていないか、長さが不足しています';
+      const errors: FormikErrors<SignInForm> = {};
+      if (values.email != '' && !emailSchema.safeParse(values.email).success) {
+        errors['email'] = 'メールアドレスの形式が間違っています';
       }
-
-      if (values.password !== '' && NOT_INCLUDED_SYMBOL_CHARS_REGEX.test(values.password)) {
-        errors.password = 'パスワードには英数字以外の文字を含めてください';
+      if (values.password != '' && !passwordSchema.safeParse(values.password).success) {
+        errors['password'] = '英数字以外の文字を含めてください';
       }
-
       return errors;
     },
     validateOnChange: true,
