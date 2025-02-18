@@ -10,6 +10,7 @@ export const useReviews = (productId: number | undefined) => {
 
   console.log("productId", productId);
 
+  // useLazyQueryで初期化
   const [loadReviews, reviewsResult] = useLazyQuery<GetProductReviewsQueryResponse>(GetProductReviewsQuery, {
     onError: handleError,
     variables: {
@@ -18,16 +19,20 @@ export const useReviews = (productId: number | undefined) => {
   });
 
   useEffect(() => {
-    // サーバー負荷が懸念されそうなので、リクエストを少し待つ
-    // サーバー負荷がなくなれば、すぐ読み込んでもよい
+    // productIdがundefinedでない場合のみクエリを実行
+    if (productId === undefined) {
+      return;  // productIdがundefinedなら処理を終了
+    }
+
+    // サーバー負荷が懸念される場合に少し待機
     const timer = setTimeout(() => {
       loadReviews();
     }, 1000);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timer);  // クリーンアップ
     };
-  }, [loadReviews, productId]);
+  }, [loadReviews, productId]);  // productIdが変化したときに再実行
 
   const reviews = reviewsResult.data?.product.reviews;
 
