@@ -13,7 +13,7 @@ export const Top: FC = () => {
   const { recommendation } = useRecommendation();
   const { features } = useFeatures();
 
-  if (recommendation === undefined) {
+  if (recommendation === undefined || features === undefined) {
     return null;
   }
 
@@ -25,19 +25,17 @@ export const Top: FC = () => {
       <Layout>
         <div>
           <ProductHeroImage product={recommendation.product} title="今週のオススメ" />
-          {/* features がまだロードされていない場合でも、非同期で表示 */}
-          {features && (
-            <div className={styles.featureList()}>
-              {features.map((featureSection) => {
-                return (
-                  <div key={featureSection.id} className={styles.feature()}>
-                    <h2 className={styles.featureHeading()}>{featureSection.title}</h2>
-                    <ProductList featureSection={featureSection} />
-                  </div>
-                );
-              })}
-            </div>
-          )}
+
+          <div className={styles.featureList()}>
+            {features.map((featureSection) => {
+              return (
+                <div key={featureSection.id} className={styles.feature()}>
+                  <h2 className={styles.featureHeading()}>{featureSection.title}</h2>
+                  <ProductList featureSection={featureSection} />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </Layout>
     </>
