@@ -6,9 +6,9 @@ import DataLoader from 'dataloader';
 
 export const featureSectionResolver: GraphQLModelResolver<FeatureSection> = {
   items: async (parent) => {
-    console.time('featureSectionResolver.items');
+    //console.time('featureSectionResolver.items');
     const res = await ItemLoader.loadMany(parent.items.map((item) => item.id));
-    console.timeEnd('featureSectionResolver.items');
+    //console.timeEnd('featureSectionResolver.items');
     // Errorやundefinedを除外してFeatureItem[]を返す
     return res.filter((item): item is FeatureItem => item instanceof FeatureItem);
   },

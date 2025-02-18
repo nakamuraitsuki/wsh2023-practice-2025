@@ -17,9 +17,9 @@ type QueryResolver = {
 
 export const queryResolver: QueryResolver = {
   features: async() => {
-    console.time("features");
+    //console.time("features");
     const res = await dataSource.manager.find(FeatureSection);
-    console.timeEnd("features");
+    //console.timeEnd("features");
     return res;
   },
   
