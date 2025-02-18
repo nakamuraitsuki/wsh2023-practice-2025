@@ -29,11 +29,13 @@ export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
         <WidthRestriction>
           <Anchor href={`/product/${product.id}`}>
             <div className={styles.container()}>
-              <AspectRatio ratioHeight={9} ratioWidth={16}>
                 {/* 画像を直接 src に渡す */}
-                <img className={styles.image()} src={imageUrl} alt={product.name} decoding='async'/>
-              </AspectRatio>
-
+                <img 
+                  className={styles.image()}
+                  src={imageUrl} 
+                  alt={product.name} 
+                  decoding='async'
+                />
               <div className={styles.overlay()}>
                 <p
                   className={classNames(styles.title(), {

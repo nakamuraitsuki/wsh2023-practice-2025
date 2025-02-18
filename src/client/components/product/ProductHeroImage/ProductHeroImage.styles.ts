@@ -16,6 +16,7 @@ export const image = () => css`
   height: 100%;
   object-fit: cover;
   width: 100%;
+  aspect-ratio: 16 / 9;
 `;
 
 export const overlay = () => css`
