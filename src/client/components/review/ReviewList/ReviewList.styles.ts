@@ -1,5 +1,9 @@
 import { css } from '@emotion/css';
 
+export const container = () => css`
+  object-fit: cover;
+`;
+
 export const itemList = () => css`
   display: grid;
   gap: 16px;
@@ -15,6 +19,8 @@ export const item = () => css`
 export const avaterImage = () => css`
   border-radius: 50%;
   overflow: hidden;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
 `;
 
 export const content = () => css`

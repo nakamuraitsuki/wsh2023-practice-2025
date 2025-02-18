@@ -1,5 +1,10 @@
 import { css } from '@emotion/css';
 
+export const container = () => css`
+  object-fit: cover;
+  aspect-ratio: 16 / 9;
+`;
+
 export const inner = () => css`
   display: inline-grid;
   overflow: hidden;
