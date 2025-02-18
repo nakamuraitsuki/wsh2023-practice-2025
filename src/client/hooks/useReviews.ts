@@ -8,6 +8,8 @@ import { GetProductReviewsQuery } from '../graphql/queries';
 export const useReviews = (productId: number | undefined) => {
   const handleError = useErrorHandler();
 
+  console.log("productId", productId);
+
   const [loadReviews, reviewsResult] = useLazyQuery<GetProductReviewsQueryResponse>(GetProductReviewsQuery, {
     onError: handleError,
     variables: {

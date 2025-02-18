@@ -36,7 +36,7 @@ export const ProductDetail: FC = () => {
     sendReview({
       variables: {
         comment,
-        productId: Number(productId??1),
+        productId: Number(productId),
       },
     });
   };
@@ -46,6 +46,8 @@ export const ProductDetail: FC = () => {
       variables: { amount: normalizeCartItemCount(amount), productId },
     });
   };
+
+  console.log("productId-Detail", productId);
 
   return (
     <>
