@@ -24,13 +24,12 @@ export const ProductCard: FC<Props> = ({ product }) => {
   return (
     <Anchor href={`/product/${product.id}`}>
       <div className={styles.inner()}>
-        {thumbnailFileNameWebp ? (
-          <div className={styles.image()}>
-            <AspectRatio ratioHeight={9} ratioWidth={16}>
-              <Image height={126} src={thumbnailFileNameWebp} width={224}/>
-            </AspectRatio>
-          </div>
-        ) : null}
+      {thumbnailFileNameWebp ? (
+        <div className={styles.image()}>
+            <img className={styles.container()} height={126} src={thumbnailFileNameWebp} width={224} loading="eager" decoding="async" />
+        </div>
+      ) : null}
+
         <div className={styles.description()}>
           <p className={styles.itemName()}>{product.name}</p>
           <span className={styles.itemPrice()}>{currencyFormatter.format(price, { code: 'JPY', precision: 0 })}</span>
