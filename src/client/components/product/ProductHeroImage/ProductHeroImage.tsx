@@ -1,3 +1,5 @@
+import CanvasKitInit from 'canvaskit-wasm';
+import CanvasKitWasmUrl from 'canvaskit-wasm/bin/canvaskit.wasm?url';
 import classNames from 'classnames';
 import { memo, useEffect, useState } from 'react';
 import type { FC } from 'react';
@@ -10,6 +12,28 @@ import { WidthRestriction } from '../../foundation/WidthRestriction';
 
 import * as styles from './ProductHeroImage.styles';
 
+async function loadImageAsDataURL(url: string): Promise<string> {
+  const CanvasKit = await CanvasKitInit({
+    // WASM ファイルの URL を渡す
+    locateFile: () => CanvasKitWasmUrl,
+  });
+
+  // 画像を読み込む
+  const data = await fetch(url).then((res) => res.arrayBuffer());
+  const image = CanvasKit.MakeImageFromEncoded(data);
+  if (image == null) {
+    // 読み込みに失敗したとき、透明な 1x1 GIF の Data URL を返却する
+    return 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+  }
+
+  // 画像を Canvas に描画して Data URL を生成する
+  const canvas = CanvasKit.MakeCanvas(image.width(), image.height());
+  const ctx = canvas.getContext('2d');
+  // @ts-expect-error ...
+  ctx?.drawImage(image, 0, 0);
+  return canvas.toDataURL();
+}
+
 type Props = {
   product: ProductFragmentResponse;
   title: string;
@@ -17,36 +41,22 @@ type Props = {
 
 export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
   const thumbnailFile = product.media.find((productMedia) => productMedia.isThumbnail)?.file;
+  const imageUrl = thumbnailFile?.filename.replace(/\.(jpg|jpeg|png)$/i, '.webp');
 
-  
-  if (!thumbnailFile) {
-    return (
-      <GetDeviceType>
-        {({ deviceType }) => (
-          <WidthRestriction>
-            <div className={styles.container()}>
-              <AspectRatio ratioHeight={9} ratioWidth={16}>
-                {/* アスペクト比の空白だけ表示 */}
-                <div style={{ backgroundColor: '#f0f0f0', height: '100%' }} />
-              </AspectRatio>
-              <div className={styles.overlay()}>
-                <p
-                  className={classNames(styles.title(), {
-                    [styles.title__desktop()]: deviceType === DeviceType.DESKTOP,
-                    [styles.title__mobile()]: deviceType === DeviceType.MOBILE,
-                  })}
-                >
-                  {title}
-                </p>
-              </div>
-            </div>
-          </WidthRestriction>
-        )}
-      </GetDeviceType>
-    );
+
+  const [imageDataUrl, setImageDataUrl] = useState<string>();
+
+  useEffect(() => {
+    if (imageUrl == null) {
+      return;
+    }
+    loadImageAsDataURL(imageUrl).then((dataUrl) => setImageDataUrl(dataUrl));
+  }, [imageUrl]);
+
+  if (imageDataUrl === undefined) {
+    return null;
   }
 
-  const imageUrl = thumbnailFile.filename.replace(/\.(jpg|jpeg|png)$/i, '.webp');
   return (
     <GetDeviceType>
       {({ deviceType }) => {
@@ -55,7 +65,7 @@ export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
             <Anchor href={`/product/${product.id}`}>
               <div className={styles.container()}>
                 <AspectRatio ratioHeight={9} ratioWidth={16}>
-                  <img className={styles.image()} src={imageUrl} alt={title}/>
+                  <img className={styles.image()} src={imageDataUrl} />
                 </AspectRatio>
 
                 <div className={styles.overlay()}>
@@ -84,5 +94,6 @@ export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
     </GetDeviceType>
   );
 }, (prevProps, nextProps) => prevProps.product.id === nextProps.product.id);
+
 
 ProductHeroImage.displayName = 'ProductHeroImage';
