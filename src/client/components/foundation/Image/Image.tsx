@@ -14,6 +14,7 @@ export const Image: FC<Props> = ({ fill, ...rest }) => {
         [styles.container__fill()]: fill === true,
       })}
       loading="eager"
+      decoding='async'
       {...rest}
     />
   );

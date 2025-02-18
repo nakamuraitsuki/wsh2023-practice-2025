@@ -31,7 +31,7 @@ export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
             <div className={styles.container()}>
               <AspectRatio ratioHeight={9} ratioWidth={16}>
                 {/* 画像を直接 src に渡す */}
-                <img className={styles.image()} src={imageUrl} alt={product.name} />
+                <img className={styles.image()} src={imageUrl} alt={product.name} decoding='async'/>
               </AspectRatio>
 
               <div className={styles.overlay()}>
