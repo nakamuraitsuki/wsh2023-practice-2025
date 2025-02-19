@@ -64,15 +64,26 @@ export default defineConfig(async () => {
           quality: [0.65, 0.8],
           speed: 10,
         },
+        webp: {
+          quality: 50,
+        },
         svgo: {
           plugins: [
             { removeViewBox: false },
             { cleanupIDs: false },
+            { removeComments: true },
+            { removeMetadata: true },
+            { removeXMLProcInst: true },
+            { collapseGroups: true },
+            { convertTransform: true },
+            { mergePaths: true },
+            { convertShapeToPath: true },
+            { convertColors: true },
+            { removeUselessStrokeAndFill: true },
+            { cleanupAttrs: true },
+            { optimizeCompressions: true },
           ],
         },
-        webp: {
-          quality: 60,
-        }
       }),
     ],
   };
