@@ -47,26 +47,6 @@ async function init(): Promise<void> {
     await next();
   });
 
-  // 静的コンテンツのキャッシュ設定
-  app.use(serve(rootResolve('dist'), {
-    maxage: 86400000, // 1日（24時間）= 86400000ms
-    setHeaders: (res, path) => {
-      if (path.endsWith('.jpg') || path.endsWith('.jpeg') || path.endsWith('.png') || path.endsWith('.gif')) {
-        res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1年
-      }
-    },
-  }));
-
-  // さらに、一般的な静的コンテンツ（例えばHTML, CSS, JSファイル）のキャッシュ期間を設定
-  app.use(serve(rootResolve('public'), {
-    maxage: 86400000, // 1日
-    setHeaders: (res, path) => {
-      if (path.endsWith('.html') || path.endsWith('.css') || path.endsWith('.js')) {
-        res.setHeader('Cache-Control', 'public, max-age=3600'); // 1時間
-      }
-    },
-  }));
-
   // Gzip 圧縮の設定
   app.use(compress({
     filter: (content_type: string) => {
