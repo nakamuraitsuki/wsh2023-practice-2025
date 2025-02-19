@@ -37,4 +37,8 @@ export const dataSource = new DataSource({
   subscribers: [],
   synchronize: true,
   type: 'sqlite',
+  extra: {
+    max: 10, // 最大接続数
+    min: 2,  // 最小接続数
+  },
 });
