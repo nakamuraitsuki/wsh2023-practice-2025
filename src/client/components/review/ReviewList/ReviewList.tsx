@@ -34,7 +34,13 @@ export const ReviewList: FC<Props> = ({ reviews }) => {
         return (
           <li key={review.id} className={styles.item()} data-testid="review-list-item">
             <div className={styles.avaterImage()}>
-                <img className={styles.container()} height={52} src={getWebpImageSrc(review.user.profile.avatar.filename)} width={52} />
+                <img 
+                  className={styles.container()} 
+                  height={52} src={getWebpImageSrc(review.user.profile.avatar.filename)} 
+                  width={52} 
+                  loading="lazy"
+                  decoding="async"
+                />
             </div>
             <div className={styles.content()}>
               <time className={styles.time()}>{endTime}</time>
