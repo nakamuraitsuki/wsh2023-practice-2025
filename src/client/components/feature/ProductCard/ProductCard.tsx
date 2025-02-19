@@ -28,7 +28,6 @@ export const ProductCard: FC<Props> = ({ product }) => {
               className={styles.container()} 
               height={126} src={thumbnailFileNameWebp} 
               width={224} 
-              loading="lazy" 
               decoding="async" 
             />
         </div>
