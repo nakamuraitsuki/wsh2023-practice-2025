@@ -3,7 +3,7 @@ import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 
 const asyncFetch: HttpOptions['fetch'] = async (uri, options) => {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 30000); // タイムアウト設定
+  const timeoutId = setTimeout(() => controller.abort(), 100000); // タイムアウト設定
 
   try {
     const response = await fetch(uri.toString(), {
