@@ -71,7 +71,7 @@ export default defineConfig(async () => {
           ],
         },
         webp: {
-          quality: 70,
+          quality: 60,
         }
       }),
     ],
