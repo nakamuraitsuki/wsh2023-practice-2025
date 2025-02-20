@@ -1,5 +1,9 @@
 import { css } from '@emotion/css';
 
+export const Anchor_container = () => css`
+  text-decoration: none;
+`;
+
 export const container = () => css`
   object-fit: cover;
   aspect-ratio: 16 / 9;

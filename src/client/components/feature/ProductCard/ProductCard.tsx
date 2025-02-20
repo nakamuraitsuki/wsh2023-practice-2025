@@ -5,7 +5,6 @@ import { isEqual } from 'lodash-es';
 
 import type { ProductFragmentResponse } from '../../../graphql/fragments';
 import { useActiveOffer } from '../../../hooks/useActiveOffer';
-import { Anchor } from '../../foundation/Anchor';
 import { ProductOfferLabel } from '../../product/ProductOfferLabel';
 
 import * as styles from './ProductCard.styles';
@@ -22,7 +21,7 @@ export const ProductCard: FC<Props> = React.memo(({ product }) => {
   const price = activeOffer?.price ?? product.price;
 
   return (
-    <Anchor href={`/product/${product.id}`}>
+    <a className={styles.Anchor_container()} href={`/product/${product.id}`}>
       <div className={styles.inner()}>
         {thumbnailFileNameWebp && (
           <div className={styles.image()}>
@@ -47,6 +46,6 @@ export const ProductCard: FC<Props> = React.memo(({ product }) => {
           </div>
         )}
       </div>
-    </Anchor>
+    </a>
   );
 }, isEqual);
