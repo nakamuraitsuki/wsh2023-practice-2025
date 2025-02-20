@@ -32,7 +32,7 @@ export const ProductCard: FC<Props> = React.memo(({ product }) => {
               src={thumbnailFileNameWebp} 
               width={224} 
               decoding="async" 
-              loading="eager"
+              loading="lazy"
             />
           </div>
         )}
