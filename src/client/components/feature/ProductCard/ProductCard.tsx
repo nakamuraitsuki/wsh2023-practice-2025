@@ -1,6 +1,7 @@
 import * as currencyFormatter from 'currency-formatter';
 import type { FC } from 'react';
 import React from 'react';
+import { isEqual } from 'lodash-es';
 
 import type { ProductFragmentResponse } from '../../../graphql/fragments';
 import { useActiveOffer } from '../../../hooks/useActiveOffer';
@@ -31,7 +32,7 @@ export const ProductCard: FC<Props> = React.memo(({ product }) => {
               src={thumbnailFileNameWebp} 
               width={224} 
               decoding="async" 
-              loading="lazy"
+              loading="eager"
             />
           </div>
         )}
@@ -48,4 +49,4 @@ export const ProductCard: FC<Props> = React.memo(({ product }) => {
       </div>
     </Anchor>
   );
-});
+}, isEqual);

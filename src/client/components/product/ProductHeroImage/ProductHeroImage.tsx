@@ -34,7 +34,7 @@ export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
                   className={styles.image()}
                   src={imageUrl} 
                   alt={product.name} 
-                  loading='lazy'
+                  loading='eager'
                   decoding='async'
                 />
               <div className={styles.overlay()}>
