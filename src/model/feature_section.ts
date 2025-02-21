@@ -10,6 +10,6 @@ export class FeatureSection {
   @Column()
   title!: string;
 
-  @OneToMany(() => FeatureItem, (item) => item.section, {eager: true})
+  @OneToMany(() => FeatureItem, (item) => item.section)
   items!: Relation<FeatureItem[]>;
 }
