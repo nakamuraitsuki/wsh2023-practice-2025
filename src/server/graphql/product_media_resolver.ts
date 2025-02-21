@@ -14,6 +14,7 @@ export const productMediaResolver: GraphQLModelResolver<ProductMedia> = {
       },
       where: { id: parent.id },
     });
+
     return productMedia.file;
   },
 };
