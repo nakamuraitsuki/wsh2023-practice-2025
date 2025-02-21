@@ -1,10 +1,9 @@
-import { memo, useEffect, useState } from 'react';
+import { memo } from 'react';
 import type { FC } from 'react';
 import classNames from 'classnames';
 
 import type { ProductFragmentResponse } from '../../../graphql/fragments';
 import { Anchor } from '../../foundation/Anchor';
-import { AspectRatio } from '../../foundation/AspectRatio';
 import { DeviceType, GetDeviceType } from '../../foundation/GetDeviceType';
 import { WidthRestriction } from '../../foundation/WidthRestriction';
 
@@ -17,10 +16,10 @@ type Props = {
 
 export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
   const thumbnailFile = product.media.find((productMedia) => productMedia.isThumbnail)?.file;
-  const imageUrl = thumbnailFile?.filename.replace(/\.(jpg|jpeg|png)$/i, '.webp'); // 画像URLを取得
+  const imageUrl = thumbnailFile?.filename.replace(/\.(jpg|jpeg|png)$/i, '.webp'); 
 
   if (!imageUrl) {
-    return null; // 画像がない場合は何も表示しない
+    return null;
   }
 
   return (
@@ -29,7 +28,6 @@ export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
         <WidthRestriction>
           <Anchor href={`/product/${product.id}`}>
             <div className={styles.container()}>
-                {/* 画像を直接 src に渡す */}
                 <img 
                   className={styles.image()}
                   src={imageUrl} 
