@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, type Relation } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, Index, type Relation } from 'typeorm';
 
 import { ShoppingCartItem } from './shopping_cart_item';
 import { User } from './user';
@@ -11,6 +11,7 @@ export class Order {
   @OneToMany(() => ShoppingCartItem, (item) => item.order)
   items!: Relation<ShoppingCartItem>[];
 
+  @Index()
   @ManyToOne(() => User)
   user!: Relation<User>;
 

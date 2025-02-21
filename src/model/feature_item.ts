@@ -8,9 +8,11 @@ export class FeatureItem {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Index()
   @ManyToOne(() => FeatureSection)
   section!: Relation<FeatureSection>;
 
+  @Index()
   @ManyToOne(() => Product)
   product!: Relation<Product>;
 }

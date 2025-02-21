@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, type Relation } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, Index, type Relation } from 'typeorm';
 
 import { Product } from './product';
 
@@ -7,6 +7,7 @@ export class LimitedTimeOffer {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Index()
   @ManyToOne(() => Product)
   product!: Relation<Product>;
 
