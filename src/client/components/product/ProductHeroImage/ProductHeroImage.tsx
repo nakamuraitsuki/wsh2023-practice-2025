@@ -1,10 +1,8 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect } from 'react';
 import type { FC } from 'react';
 import classNames from 'classnames';
 
 import type { ProductFragmentResponse } from '../../../graphql/fragments';
-import { Anchor } from '../../foundation/Anchor';
-import { AspectRatio } from '../../foundation/AspectRatio';
 import { DeviceType, GetDeviceType } from '../../foundation/GetDeviceType';
 import { WidthRestriction } from '../../foundation/WidthRestriction';
 
@@ -17,24 +15,37 @@ type Props = {
 
 export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
   const thumbnailFile = product.media.find((productMedia) => productMedia.isThumbnail)?.file;
-  const imageUrl = thumbnailFile?.filename.replace(/\.(jpg|jpeg|png)$/i, '.webp'); // 画像URLを取得
+  const imageUrl = thumbnailFile?.filename.replace(/\.(jpg|jpeg|png)$/i, '.webp'); 
+
+  useEffect(() => {
+    if (!imageUrl) return;
+
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = imageUrl;
+    link.type = 'image/webp';
+    document.head.appendChild(link);
+
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, [imageUrl]);
 
   if (!imageUrl) {
-    return null; // 画像がない場合は何も表示しない
+    return null;
   }
 
   return (
     <GetDeviceType>
       {({ deviceType }) => (
         <WidthRestriction>
-          <Anchor href={`/product/${product.id}`}>
+          <a className={styles.Anchor_container()} href={`/product/${product.id}`}>
             <div className={styles.container()}>
-                {/* 画像を直接 src に渡す */}
                 <img 
                   className={styles.image()}
                   src={imageUrl} 
                   alt={product.name} 
-                  loading='lazy'
                   decoding='async'
                 />
               <div className={styles.overlay()}>
@@ -56,7 +67,7 @@ export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
                 </p>
               </div>
             </div>
-          </Anchor>
+          </a>
         </WidthRestriction>
       )}
     </GetDeviceType>

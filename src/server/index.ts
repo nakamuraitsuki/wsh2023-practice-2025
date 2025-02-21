@@ -41,12 +41,6 @@ async function init(): Promise<void> {
   // セッション設定
   app.use(session({}, app));
 
-  // キャッシュ制御
-  app.use(async (ctx, next) => {
-    ctx.set('Cache-Control', 'no-store');
-    await next();
-  });
-
   // Gzip 圧縮の設定
   app.use(compress({
     filter: (content_type: string) => {
