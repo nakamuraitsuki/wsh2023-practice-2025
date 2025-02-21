@@ -9,9 +9,11 @@ export class ShoppingCartItem {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Index()
   @ManyToOne(() => Product)
   product!: Relation<Product>;
 
+  @Index()
   @ManyToOne(() => Order)
   order!: Relation<Order>;
 

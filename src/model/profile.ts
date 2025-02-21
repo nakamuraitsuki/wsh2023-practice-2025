@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, type Relation } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, Index, type Relation } from 'typeorm';
 
 import { MediaFile } from './media_file';
 import { User } from './user';
@@ -15,6 +15,7 @@ export class Profile {
   @Column()
   name!: string;
 
+  @Index()
   @ManyToOne(() => MediaFile)
   avatar!: Relation<MediaFile>;
 }
