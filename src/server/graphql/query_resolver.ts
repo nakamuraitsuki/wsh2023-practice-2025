@@ -17,9 +17,15 @@ type QueryResolver = {
 
 export const queryResolver: QueryResolver = {
   features: async() => {
-    //console.time("features");
-    const res = await dataSource.manager.find(FeatureSection);
-    //console.timeEnd("features");
+    const res = await dataSource.manager
+      .createQueryBuilder(FeatureSection, 'section')
+      .leftJoinAndSelect('section.items', 'item')
+      .leftJoinAndSelect('item.product', 'product')
+      .leftJoinAndSelect('product.media', 'media')
+      .leftJoinAndSelect('product.offers', 'offers')
+      .leftJoinAndSelect('media.file', 'file')
+      .getMany();  // FeatureSectionをその関連項目（FeatureItem, Product, Media, Offersなど）と一緒に取得
+      console.log("res",res);
     return res;
   },
   
@@ -36,11 +42,8 @@ export const queryResolver: QueryResolver = {
       where: { id: args.id },
     });
   },
-  recommendations: async () => {
-    const res = await dataSource.manager.find(Recommendation, {
-      relations: { product: true },
-    });
-    return res;
+  recommendations: () => {
+    return dataSource.manager.find(Recommendation);
   },
   user: (_parent, args) => {
     return dataSource.manager.findOneOrFail(User, {

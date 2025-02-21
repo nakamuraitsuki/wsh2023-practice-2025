@@ -39,7 +39,7 @@ export const ProductCard: FC<Props> = React.memo(({ product, index }) => {
   const { activeOffer } = useActiveOffer(product);
   const price = useMemo(() => activeOffer?.price ?? product.price, [activeOffer, product.price]);
 
-  const shouldEagerLoad = index < 3;
+  const shouldEagerLoad = index < 4;
 
   const renderedElement = (
     <a className={styles.Anchor_container()} href={`/product/${product.id}`}>
