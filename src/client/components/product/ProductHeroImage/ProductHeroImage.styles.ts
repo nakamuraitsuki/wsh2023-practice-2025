@@ -1,5 +1,9 @@
 import { css } from '@emotion/css';
 
+export const Anchor_container = () => css`
+  text-decoration: none;
+`;
+
 export const container = () => css`
   opacity: 1;
   position: relative;

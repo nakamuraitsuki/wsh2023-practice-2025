@@ -3,7 +3,6 @@ import type { FC } from 'react';
 import classNames from 'classnames';
 
 import type { ProductFragmentResponse } from '../../../graphql/fragments';
-import { Anchor } from '../../foundation/Anchor';
 import { DeviceType, GetDeviceType } from '../../foundation/GetDeviceType';
 import { WidthRestriction } from '../../foundation/WidthRestriction';
 
@@ -26,13 +25,12 @@ export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
     <GetDeviceType>
       {({ deviceType }) => (
         <WidthRestriction>
-          <Anchor href={`/product/${product.id}`}>
+          <a className={styles.Anchor_container()} href={`/product/${product.id}`}>
             <div className={styles.container()}>
                 <img 
                   className={styles.image()}
                   src={imageUrl} 
                   alt={product.name} 
-                  loading='lazy'
                   decoding='async'
                 />
               <div className={styles.overlay()}>
@@ -54,7 +52,7 @@ export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
                 </p>
               </div>
             </div>
-          </Anchor>
+          </a>
         </WidthRestriction>
       )}
     </GetDeviceType>
