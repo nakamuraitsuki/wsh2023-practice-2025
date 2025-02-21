@@ -1,4 +1,4 @@
-import http from 'node:http';
+import http2 from 'node:http2';
 import { koaMiddleware } from '@as-integrations/koa';
 import gracefulShutdown from 'http-graceful-shutdown';
 import Koa from 'koa';
@@ -23,10 +23,9 @@ async function init(): Promise<void> {
   await dataSource.initialize();
 
   const app = new Koa();
-  const httpServer = http.createServer(app.callback());
 
-  // HTTP Keep-Alive タイムアウトの設定
-  httpServer.keepAliveTimeout = 60 * 1000; // 60 秒
+  // HTTP/2サーバーの作成
+  const http2Server = http2.createSecureServer(app.callback());
 
   app.keys = ['cookie-key'];
 
@@ -43,10 +42,7 @@ async function init(): Promise<void> {
 
   // Gzip 圧縮の設定
   app.use(compress({
-    filter: (content_type: string) => {
-      // content_type が string 型かどうかを確認し、boolean を返す
-      return content_type && content_type.includes('application/json') ? true : false;
-    },
+    filter: (content_type: string) => content_type && content_type.includes('application/json') ? true : false,
     threshold: 2048, // 2KB 以上のレスポンスを圧縮対象に
   }));
 
@@ -81,12 +77,12 @@ async function init(): Promise<void> {
   app.use(async (ctx) => await send(ctx, rootResolve('/dist/index.html')));
 
   // サーバー開始
-  httpServer.listen({ port: PORT }, () => {
-    console.log(`🚀 Server ready at http://localhost:${PORT}`);
+  http2Server.listen(PORT, () => {
+    console.log(`🚀 Server ready at https://localhost:${PORT}`);
   });
 
   // graceful shutdown
-  gracefulShutdown(httpServer, {
+  gracefulShutdown(http2Server, {
     async onShutdown(signal) {
       console.log(`Received signal to terminate: ${signal}`);
       await apolloServer.stop();
