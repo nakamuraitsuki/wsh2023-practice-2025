@@ -9,7 +9,13 @@ type Props = {
 };
 
 const getWebpImageSrc = (filename: string) => {
-  return filename.replace(/\.(jpg|jpeg|png|gif)$/i, '.webp');
+  const baseName = filename.replace(/\.(jpg|jpeg|png|gif)$/i, '');
+  return {
+    default: `${baseName}-960w.webp`,
+    srcSet: `${baseName}-480w.webp 480w, 
+             ${baseName}-960w.webp 960w, 
+             ${baseName}-1440w.webp 1440w`,
+  };
 };
 
 export const ReviewList: FC<Props> = ({ reviews }) => {
@@ -34,10 +40,13 @@ export const ReviewList: FC<Props> = ({ reviews }) => {
             <div className={styles.avaterImage()}>
                 <img 
                   className={styles.container()} 
-                  height={52} src={getWebpImageSrc(review.user.profile.avatar.filename)} 
+                  height={52} 
+                  src={getWebpImageSrc(review.user.profile.avatar.filename).default} 
+                  srcSet={getWebpImageSrc(review.user.profile.avatar.filename).srcSet} 
                   width={52} 
                   loading='lazy'
                   decoding="async"
+                  sizes="224px"
                 />
             </div>
             <div className={styles.content()}>
