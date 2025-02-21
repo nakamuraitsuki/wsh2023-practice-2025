@@ -14,10 +14,10 @@ export const ProductGridList: FC<Props> = ({ featureSection }) => {
 
   return (
     <ul className={styles.cardList()}>
-      {products.map((product) => {
+      {products.map((product, index) => {
         return (
           <li key={product.id} className={styles.cardListItem()}>
-            <ProductCard product={product} />
+            <ProductCard product={product} index={index}/>
           </li>
         );
       })}

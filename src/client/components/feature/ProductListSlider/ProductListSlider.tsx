@@ -39,7 +39,7 @@ export const ProductListSlider: FC<Props> = ({ featureSection }) => {
                   [styles.item__hidden()]: hidden,
                 })}
               >
-                <ProductCard product={product} />
+                <ProductCard product={product} index={index} />
               </li>
             );
           })}
