@@ -37,4 +37,4 @@ COPY --from=build --chown=node:node /app /app
 WORKDIR /app
 USER node
 
-CMD ["dumb-init", "sh", "-c", "ts-node -r ts-node/register ./node_modules/typeorm/cli.js migration:run --dataSource src/server/data_source.ts && ts-node ./src/server/index.ts"]
+CMD ["dumb-init", "sh", "-c", "./node_modules/.bin/ts-node -r ts-node/register ./node_modules/typeorm/cli.js migration:run --dataSource src/server/data_source.ts && ./node_modules/.bin/ts-node ./src/server/index.ts"]
