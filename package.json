@@ -14,7 +14,8 @@
     "format:stylelint": "stylelint --ignore-path .gitignore --fix './**/styles.{js,ts}' './**/*.styles.{js,ts}' './**/*.css'",
     "seed": "npm-run-all -s clear:database seed:database",
     "seed:database": "cross-env SEED_BASE_UNIXTIME=1677855600 ts-node tools/seed.ts",
-    "clear:database": "rm -f ./databases/database.sqlite"
+    "clear:database": "rm -f ./databases/database.sqlite",
+    "typeorm":"typeorm -r ts-node/register"
   },
   "dependencies": {
     "@apollo/client": "3.8.0-alpha.7",
