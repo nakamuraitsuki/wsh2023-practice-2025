@@ -51,7 +51,7 @@ export const ProductCard: FC<Props> = React.memo(({ product, index }) => {
               height={126} 
               width={224} 
               decoding="async" 
-              loading={shouldEagerLoad ? 'eager' : 'lazy'}
+              loading='lazy'
               src={thumbnailFileNames.default}
               srcSet={thumbnailFileNames.srcSet}
               sizes="224px"
