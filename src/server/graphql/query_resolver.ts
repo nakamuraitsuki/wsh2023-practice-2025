@@ -16,17 +16,17 @@ type QueryResolver = {
 };
 
 export const queryResolver: QueryResolver = {
-  features: async() => {
+  features: async () => {
     const res = await dataSource.manager
       .createQueryBuilder(FeatureSection, 'section')
-      .innerJoinAndSelect('section.items', 'item') // LEFT JOIN → INNER JOIN
-      .innerJoinAndSelect('item.product', 'product') // LEFT JOIN → INNER JOIN
-      .innerJoinAndSelect('product.media', 'media') // LEFT JOIN → INNER JOIN
-      .innerJoinAndSelect('product.offers', 'offers') // LEFT JOIN → INNER JOIN
-      .innerJoinAndSelect('media.file', 'file') // LEFT JOIN → INNER JOIN
+      .leftJoinAndSelect('section.items', 'item') // LEFT JOINに変更
+      .leftJoinAndSelect('item.product', 'product') // LEFT JOINに変更
+      .leftJoinAndSelect('product.media', 'media') // LEFT JOINに変更
+      .leftJoinAndSelect('product.offers', 'offers') // LEFT JOINに変更
+      .leftJoinAndSelect('media.file', 'file') // LEFT JOINに変更
       .getMany();  // FeatureSectionをその関連項目（FeatureItem, Product, Media, Offersなど）と一緒に取得
     return res;
-  },
+  },  
   
   me: async (_parent, _args, { session }) => {
     if (session['userId'] == null) {
