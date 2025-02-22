@@ -18,6 +18,6 @@ export const loadThumbnail = async (url: string) => {
   video.currentTime = 0;
   context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-  const thumbnailData = canvas.toDataURL('image/png');
+  const thumbnailData = canvas.toDataURL('image/webp');
   return thumbnailData;
 };

@@ -6,7 +6,6 @@ import { getMediaType } from '../../../../utils/get_media_type';
 import { Icon } from '../../../foundation/Icon';
 
 import * as styles from './MediaItem.styles';
-import { loadThumbnail } from './loadThumbnail';
 
 type Props = {
   file: MediaFileFragmentResponse;
@@ -16,15 +15,21 @@ const getWebpImageSrc = (filename: string) => {
   return filename.replace(/\.(jpg|jpeg|png|gif)$/i, '-480w.webp');
 };
 
+const getThumbnailSrc = (filename: string) => {
+  return filename.replace(/^\/videos\/(.+)\.mp4$/i, '/thumbnails/$1.webp')
+}
+
 export const MediaItem: FC<Props> = ({ file }) => {
   const [imageSrc, setImageSrc] = useState<string>();
   const mediaType = getMediaType(file.filename);
 
   useEffect(() => {
     if (mediaType === 'image') {
-      return setImageSrc(file.filename);
+      setImageSrc(getWebpImageSrc(file.filename));
+    } else if (mediaType === 'video') {
+      setImageSrc(getThumbnailSrc(file.filename));
     }
-    loadThumbnail(file.filename).then((url) => setImageSrc(url));
+    console.log("file.filename", file.filename);
   }, [file.filename, mediaType]);
 
   if (imageSrc === undefined) {

@@ -20,7 +20,7 @@ export const MediaItemPreviewer: FC<Props> = ({ file }) => {
 
   return (
     <div className={styles.container()}>
-      {type === 'image' && <img className={styles.image_container()} src={getWebpImageSrc(file.filename)} />}
+      {type === 'image' && <img className={styles.image_container()} src={getWebpImageSrc(file.filename)} decoding='async'/>}
       {type === 'video' && (
         <GetDeviceType>
           {({ deviceType }) => (
