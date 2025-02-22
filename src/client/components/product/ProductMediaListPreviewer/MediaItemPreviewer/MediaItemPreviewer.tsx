@@ -4,7 +4,6 @@ import type { FC } from 'react';
 import type { MediaFileFragmentResponse } from '../../../../graphql/fragments';
 import { getMediaType } from '../../../../utils/get_media_type';
 import { DeviceType, GetDeviceType } from '../../../foundation/GetDeviceType';
-import { Image } from '../../../foundation/Image';
 
 import * as styles from './MediaItemPreiewer.styles';
 
@@ -21,7 +20,7 @@ export const MediaItemPreviewer: FC<Props> = ({ file }) => {
 
   return (
     <div className={styles.container()}>
-      {type === 'image' && <Image fill src={getWebpImageSrc(file.filename)} />}
+      {type === 'image' && <img className={styles.image_container()} src={getWebpImageSrc(file.filename)} decoding='async'/>}
       {type === 'video' && (
         <GetDeviceType>
           {({ deviceType }) => (

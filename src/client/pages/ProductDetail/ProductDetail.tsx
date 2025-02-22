@@ -32,6 +32,10 @@ export const ProductDetail: FC = () => {
   const { amountInCart } = useAmountInCart(Number(productId));
   const { activeOffer } = useActiveOffer(product);
 
+  if(product === undefined || reviews === undefined) {
+    return null;
+  }
+
   const handleSubmitReview = ({ comment }: { comment: string }) => {
     sendReview({
       variables: {

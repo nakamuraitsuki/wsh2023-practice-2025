@@ -4,18 +4,20 @@ import { useEffect, useState } from 'react';
 import type { MediaFileFragmentResponse } from '../../../../graphql/fragments';
 import { getMediaType } from '../../../../utils/get_media_type';
 import { Icon } from '../../../foundation/Icon';
-import { Image } from '../../../foundation/Image';
 
 import * as styles from './MediaItem.styles';
-import { loadThumbnail } from './loadThumbnail';
 
 type Props = {
   file: MediaFileFragmentResponse;
 };
 
 const getWebpImageSrc = (filename: string) => {
-  return filename.replace(/\.(jpg|jpeg|png|gif)$/i, '.webp');
+  return filename.replace(/\.(jpg|jpeg|png|gif)$/i, '-480w.webp');
 };
+
+const getThumbnailSrc = (filename: string) => {
+  return filename.replace(/^\/videos\/(.+)\.mp4$/i, '/thumbnails/$1.webp')
+}
 
 export const MediaItem: FC<Props> = ({ file }) => {
   const [imageSrc, setImageSrc] = useState<string>();
@@ -23,9 +25,11 @@ export const MediaItem: FC<Props> = ({ file }) => {
 
   useEffect(() => {
     if (mediaType === 'image') {
-      return setImageSrc(file.filename);
+      setImageSrc(getWebpImageSrc(file.filename));
+    } else if (mediaType === 'video') {
+      setImageSrc(getThumbnailSrc(file.filename));
     }
-    loadThumbnail(file.filename).then((url) => setImageSrc(url));
+    console.log("file.filename", file.filename);
   }, [file.filename, mediaType]);
 
   if (imageSrc === undefined) {
@@ -34,7 +38,7 @@ export const MediaItem: FC<Props> = ({ file }) => {
 
   return (
     <div className={styles.container()}>
-      <Image fill src={getWebpImageSrc(imageSrc)} />
+      <img className={styles.image_container()} src={getWebpImageSrc(imageSrc)} />
       {mediaType === 'video' && (
         <div className={styles.playIcon()}>
           <Icon color="#ffffff" height={16} type="FaPlay" width={16} />

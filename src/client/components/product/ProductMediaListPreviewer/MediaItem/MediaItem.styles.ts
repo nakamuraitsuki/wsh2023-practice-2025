@@ -15,3 +15,11 @@ export const playIcon = () => css`
   position: absolute;
   width: 100%;
 `;
+
+export const image_container = () => css`
+  object-fit: cover;
+  height: 100%;
+  inset: 0;
+  position: absolute;
+  width: 100%;
+`;
