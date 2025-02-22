@@ -19,11 +19,11 @@ export const queryResolver: QueryResolver = {
   features: async() => {
     const res = await dataSource.manager
       .createQueryBuilder(FeatureSection, 'section')
-      .leftJoinAndSelect('section.items', 'item')
-      .leftJoinAndSelect('item.product', 'product')
-      .leftJoinAndSelect('product.media', 'media')
-      .leftJoinAndSelect('product.offers', 'offers')
-      .leftJoinAndSelect('media.file', 'file')
+      .innerJoinAndSelect('section.items', 'item') // LEFT JOIN → INNER JOIN
+      .innerJoinAndSelect('item.product', 'product') // LEFT JOIN → INNER JOIN
+      .innerJoinAndSelect('product.media', 'media') // LEFT JOIN → INNER JOIN
+      .innerJoinAndSelect('product.offers', 'offers') // LEFT JOIN → INNER JOIN
+      .innerJoinAndSelect('media.file', 'file') // LEFT JOIN → INNER JOIN
       .getMany();  // FeatureSectionをその関連項目（FeatureItem, Product, Media, Offersなど）と一緒に取得
     return res;
   },
@@ -41,8 +41,15 @@ export const queryResolver: QueryResolver = {
       where: { id: args.id },
     });
   },
-  recommendations: () => {
-    return dataSource.manager.find(Recommendation);
+  recommendations: async() => {
+    const res = await dataSource.manager
+      .createQueryBuilder(Recommendation, 'recommendation')
+      .innerJoinAndSelect('recommendation.product', 'product')  // RecommendationとProductをINNER JOIN
+      .innerJoinAndSelect('product.media', 'media')  // ProductとMediaをINNER JOIN
+      .innerJoinAndSelect('product.offers', 'offers')  // ProductとOffersをINNER JOIN
+      .innerJoinAndSelect('media.file', 'file')  // MediaとFileをINNER JOIN
+      .getMany();  // Recommendationとその関連データを取得  
+    return res;
   },
   user: (_parent, args) => {
     return dataSource.manager.findOneOrFail(User, {

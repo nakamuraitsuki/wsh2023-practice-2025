@@ -35,10 +35,12 @@ export const dataSource = new DataSource({
   logging: false,
   migrations: [],
   subscribers: [],
-  synchronize: true,
+  synchronize: false,
   type: 'sqlite',
   extra: {
     max: 10, // 最大接続数
     min: 2,  // 最小接続数
+    // 他のSQLite特有の設定
+    busyTimeout: 5000, // データベースがロックされている場合に最大待機時間を設定（ミリ秒）
   },
 });
