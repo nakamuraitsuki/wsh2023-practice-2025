@@ -29,7 +29,6 @@ export const MediaItem: FC<Props> = ({ file }) => {
     } else if (mediaType === 'video') {
       setImageSrc(getThumbnailSrc(file.filename));
     }
-    console.log("file.filename", file.filename);
   }, [file.filename, mediaType]);
 
   if (imageSrc === undefined) {
@@ -38,7 +37,7 @@ export const MediaItem: FC<Props> = ({ file }) => {
 
   return (
     <div className={styles.container()}>
-      <img className={styles.image_container()} src={getWebpImageSrc(imageSrc)} />
+      <img className={styles.image_container()} src={getWebpImageSrc(imageSrc)} decoding='async'/>
       {mediaType === 'video' && (
         <div className={styles.playIcon()}>
           <Icon color="#ffffff" height={16} type="FaPlay" width={16} />

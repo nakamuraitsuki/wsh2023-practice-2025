@@ -51,8 +51,6 @@ export const ProductDetail: FC = () => {
     });
   };
 
-  console.log("productId-Detail", productId);
-
   return (
     <>
       {product && (

@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import type { FC } from 'react';
+import { useEffect } from 'react';
 
 import type { MediaFileFragmentResponse } from '../../../../graphql/fragments';
 import { getMediaType } from '../../../../utils/get_media_type';
@@ -17,6 +18,22 @@ const getWebpImageSrc = (filename: string) => {
 
 export const MediaItemPreviewer: FC<Props> = ({ file }) => {
   const type = getMediaType(file.filename);
+
+    useEffect(() => {
+      if (!file) return;
+      if (type !== 'image') return;
+  
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = getWebpImageSrc(file.filename);
+      link.type = 'image/webp';
+      document.head.appendChild(link);
+  
+      return () => {
+        document.head.removeChild(link);
+      };
+    }, [file]);
 
   return (
     <div className={styles.container()}>
