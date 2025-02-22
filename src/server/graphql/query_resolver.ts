@@ -36,11 +36,13 @@ export const queryResolver: QueryResolver = {
       where: { id: session['userId'] },
     });
   },
-  product: (_parent, args) => {
-    return dataSource.manager.findOneOrFail(Product, {
-      where: { id: args.id },
-    });
-  },
+  product: async (_parent, args) => {
+    return await dataSource.manager
+      .createQueryBuilder(Product, 'product')
+      .leftJoinAndSelect('product.reviews', 'reviews') // レビュー情報を取得
+      .where('product.id = :id', { id: args.id })
+      .getOneOrFail();
+  },  
   recommendations: async() => {
     const res = await dataSource.manager
       .createQueryBuilder(Recommendation, 'recommendation')
