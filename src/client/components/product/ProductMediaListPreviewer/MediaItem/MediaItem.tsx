@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import type { MediaFileFragmentResponse } from '../../../../graphql/fragments';
 import { getMediaType } from '../../../../utils/get_media_type';
 import { Icon } from '../../../foundation/Icon';
-import { Image } from '../../../foundation/Image';
 
 import * as styles from './MediaItem.styles';
 import { loadThumbnail } from './loadThumbnail';
@@ -14,7 +13,7 @@ type Props = {
 };
 
 const getWebpImageSrc = (filename: string) => {
-  return filename.replace(/\.(jpg|jpeg|png|gif)$/i, '.webp');
+  return filename.replace(/\.(jpg|jpeg|png|gif)$/i, '-480w.webp');
 };
 
 export const MediaItem: FC<Props> = ({ file }) => {
@@ -34,7 +33,7 @@ export const MediaItem: FC<Props> = ({ file }) => {
 
   return (
     <div className={styles.container()}>
-      <Image fill src={getWebpImageSrc(imageSrc)} />
+      <img className={styles.image_container()} src={getWebpImageSrc(imageSrc)} />
       {mediaType === 'video' && (
         <div className={styles.playIcon()}>
           <Icon color="#ffffff" height={16} type="FaPlay" width={16} />
