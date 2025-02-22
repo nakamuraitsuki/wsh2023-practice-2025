@@ -13,10 +13,6 @@ type Props = {
   product: ProductFragmentResponse | undefined;
 };
 
-const getWebpImageSrc = (filename: string) => {
-  return filename.replace(/\.(jpg|jpeg|png|gif)$/i, '.webp');
-};
-
 export const ProductMediaListPreviewer: FC<Props> = ({ product }) => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
