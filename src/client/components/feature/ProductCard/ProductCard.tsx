@@ -1,7 +1,6 @@
 import * as currencyFormatter from 'currency-formatter';
 import type { FC } from 'react';
 import React, { useRef, useMemo } from 'react';
-import { isEqual } from 'lodash-es';
 
 import type { ProductFragmentResponse } from '../../../graphql/fragments';
 import { useActiveOffer } from '../../../hooks/useActiveOffer';
@@ -77,4 +76,4 @@ export const ProductCard: FC<Props> = React.memo(({ product, index }) => {
 
   cacheRef.current.set(product.id.toString(), renderedElement);
   return renderedElement;
-}, isEqual);
+}, (prevProps, nextProps) => (prevProps.product.id === nextProps.product.id));
