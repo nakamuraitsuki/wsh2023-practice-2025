@@ -1,6 +1,4 @@
 import http from 'node:http';
-import cluster from 'node:cluster';
-import os from 'node:os';
 import { koaMiddleware } from '@as-integrations/koa';
 import gracefulShutdown from 'http-graceful-shutdown';
 import Koa from 'koa';
@@ -25,9 +23,9 @@ async function init(): Promise<void> {
   await dataSource.initialize();
 
   const app = new Koa();
+  const httpServer = http.createServer(app.callback());
 
   // HTTP Keep-Alive タイムアウトの設定
-  const httpServer = http.createServer(app.callback());
   httpServer.keepAliveTimeout = 60 * 1000; // 60 秒
 
   app.keys = ['cookie-key'];
@@ -45,7 +43,10 @@ async function init(): Promise<void> {
 
   // Gzip 圧縮の設定
   app.use(compress({
-    filter: (content_type: string) => content_type && content_type.includes('application/json') ? true : false,
+    filter: (content_type: string) => {
+      // content_type が string 型かどうかを確認し、boolean を返す
+      return content_type && content_type.includes('application/json') ? true : false;
+    },
     threshold: 2048, // 2KB 以上のレスポンスを圧縮対象に
   }));
 
@@ -65,10 +66,12 @@ async function init(): Promise<void> {
   );
 
   // 初期化用の POST ルート
-  app.use(route.post('/initialize', async (ctx) => {
-    await initializeDatabase();
-    ctx.status = 204;
-  }));
+  app.use(
+    route.post('/initialize', async (ctx) => {
+      await initializeDatabase();
+      ctx.status = 204;
+    }),
+  );
 
   // 静的ファイルの配信設定
   app.use(serve(rootResolve('dist'), { maxage: 86400000 })); // 1日キャッシュ
@@ -92,25 +95,7 @@ async function init(): Promise<void> {
   });
 }
 
-if (cluster.isMaster) {
-  // マスターが利用する CPU コア数を取得
-  const numCPUs = os.cpus().length;
-
-  console.log(`Master process is running on ${process.pid}.`);
-
-  // 各 CPU コアに対してワーカープロセスを生成
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork(); // 新しいワーカーを起動
-  }
-
-  // ワーカーが死んだ場合の処理
-  cluster.on('exit', (worker, code, signal) => {
-    console.log(`Worker ${worker.process.pid} died`);
-  });
-} else {
-  // 各ワーカープロセスでサーバーを起動
-  init().catch((err) => {
-    console.error(err);
-    process.exit(1);
-  });
-}
+init().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
