@@ -1,6 +1,5 @@
 import type { FormikErrors } from 'formik';
 import { useFormik } from 'formik';
-import isEqual from 'lodash-es/isEqual';
 import type { FC } from 'react';
 import { memo } from 'react';
 
@@ -34,12 +33,9 @@ export const ReviewSection: FC<Props> = memo(({ hasSignedIn, onSubmitReview, rev
     },
     validate(values) {
       const errors: FormikErrors<ReviewForm> = {};
-
-      // 64文字以内かチェック
       if (values.comment !== '' && !LESS_THAN_64_LENGTH_REGEX.test(values.comment)) {
         errors['comment'] = '64 文字以内でコメントしてください';
       }
-
       return errors;
     },
     validateOnChange: true,
@@ -71,6 +67,9 @@ export const ReviewSection: FC<Props> = memo(({ hasSignedIn, onSubmitReview, rev
       )}
     </div>
   );
-}, isEqual);
+}, (prevProps, nextProps) => (
+  prevProps.hasSignedIn === nextProps.hasSignedIn &&
+  prevProps.reviews?.length === nextProps.reviews?.length
+));
 
 ReviewSection.displayName = 'ReviewSection';

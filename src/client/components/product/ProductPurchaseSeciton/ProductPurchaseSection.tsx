@@ -1,4 +1,3 @@
-import isEqual from 'lodash-es/isEqual';
 import type { FC } from 'react';
 import { memo } from 'react';
 
@@ -66,7 +65,11 @@ export const ProductPurchaseSection: FC<Props> = memo(
       </div>
     );
   },
-  isEqual,
+  (prevProps, nextProps) => (
+    prevProps.product?.id === nextProps.product?.id
+    && prevProps.amountInCart === nextProps.amountInCart
+    && prevProps.isAuthUser === nextProps.isAuthUser
+  )
 );
 
 ProductPurchaseSection.displayName = 'ProductPurchaseSection';

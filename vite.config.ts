@@ -32,6 +32,11 @@ export default defineConfig(async () => {
       rollupOptions: {
         output: {
           experimentalMinChunkSize: 40960,
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              return 'vendor';
+            }
+          }          
         },
         plugins: [
           visualizer({
