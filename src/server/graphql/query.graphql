@@ -1,16 +1,7 @@
-# ディレクティブを定義
-directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT
-
-enum CacheControlScope {
-  PUBLIC
-  PRIVATE
-}
-
-# クエリとフィールドに@cacheControlを適用
 type Query {
   product(id: Int!): Product!
   recommendations: [Recommendation!]!
-  features: [FeatureSection!]! @cacheControl(maxAge: 86400)  # 1日キャッシュ
+  features: [FeatureSection!]!
   user(id: Int!): User!
   me: User
 }

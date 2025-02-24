@@ -2,7 +2,6 @@ import fs from 'node:fs/promises';
 
 import { ApolloServer } from '@apollo/server';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-import { ApolloServerPluginCacheControl } from '@apollo/server/plugin/cacheControl';
 import { InMemoryLRUCache } from 'apollo-server-caching';
 
 import type { Context } from '../context';
@@ -42,10 +41,7 @@ export async function initializeApolloServer(): Promise<ApolloServer<Context>> {
   );
 
   const server = new ApolloServer({
-    plugins: [
-      ApolloServerPluginLandingPageLocalDefault({ includeCookies: true }),
-      ApolloServerPluginCacheControl({ defaultMaxAge: 3600 }),
-    ],
+    plugins: [ApolloServerPluginLandingPageLocalDefault({ includeCookies: true })],
     resolvers: {
       FeatureItem: featureItemResolver,
       FeatureSection: featureSectionResolver,
