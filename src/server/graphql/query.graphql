@@ -9,7 +9,7 @@ enum CacheControlScope {
 # クエリとフィールドに@cacheControlを適用
 type Query {
   product(id: Int!): Product!
-  recommendations: [Recommendation!]!
+  recommendations: [Recommendation!]! @cacheControl(maxAge: 86400)
   features: [FeatureSection!]! @cacheControl(maxAge: 86400)  # 1日キャッシュ
   user(id: Int!): User!
   me: User
