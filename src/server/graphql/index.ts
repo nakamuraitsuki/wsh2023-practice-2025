@@ -2,13 +2,13 @@ import fs from 'node:fs/promises';
 
 import { ApolloServer } from '@apollo/server';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { ApolloServerPluginCacheControl } from '@apollo/server/plugin/cacheControl';
+import  responseCachePlugin  from '@apollo/server-plugin-response-cache';
 import { InMemoryLRUCache } from 'apollo-server-caching';
 
 import type { Context } from '../context';
 import { rootResolve } from '../utils/root_resolve';
 
-import { featureItemResolver } from './feature_item_resolver';
-import { featureSectionResolver } from './feature_section_resolver';
 import { mutationResolver } from './mutation_resolver';
 import { orderResolver } from './order_resolver';
 import { productMediaResolver } from './product_media_resolver';
@@ -19,6 +19,7 @@ import { recommendationResolver } from './recommendation_resolver';
 import { reviewResolver } from './review_resolver';
 import { shoppingCartItemResolver } from './shopping_cart_item_resolver';
 import { userResolver } from './user_resolver';
+
 
 export async function initializeApolloServer(): Promise<ApolloServer<Context>> {
   const typeDefs = await Promise.all(
@@ -41,10 +42,15 @@ export async function initializeApolloServer(): Promise<ApolloServer<Context>> {
   );
 
   const server = new ApolloServer({
-    plugins: [ApolloServerPluginLandingPageLocalDefault({ includeCookies: true })],
+    plugins: [
+      ApolloServerPluginLandingPageLocalDefault({ includeCookies: true }),
+      ApolloServerPluginCacheControl({
+        defaultMaxAge: 3600,
+        calculateHttpHeaders: true,
+      }),
+      responseCachePlugin(),
+    ],
     resolvers: {
-      FeatureItem: featureItemResolver,
-      FeatureSection: featureSectionResolver,
       Mutation: mutationResolver,
       Order: orderResolver,
       Product: productResolver,
