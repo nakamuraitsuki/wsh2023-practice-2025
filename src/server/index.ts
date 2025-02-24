@@ -74,8 +74,8 @@ async function init(): Promise<void> {
   );
 
   // 静的ファイルの配信設定
-  app.use(serve(rootResolve('dist'), { maxage: 86400000 })); // 1日キャッシュ
-  app.use(serve(rootResolve('public'), { maxage: 86400000 }));
+  app.use(serve(rootResolve('dist')));
+  app.use(serve(rootResolve('public')));
 
   // すべてのリクエストに対して、インデックスページを返す
   app.use(async (ctx) => await send(ctx, rootResolve('/dist/index.html')));
