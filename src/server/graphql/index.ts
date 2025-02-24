@@ -8,8 +8,6 @@ import { InMemoryLRUCache } from 'apollo-server-caching';
 import type { Context } from '../context';
 import { rootResolve } from '../utils/root_resolve';
 
-import { featureItemResolver } from './feature_item_resolver';
-import { featureSectionResolver } from './feature_section_resolver';
 import { mutationResolver } from './mutation_resolver';
 import { orderResolver } from './order_resolver';
 import { productMediaResolver } from './product_media_resolver';
@@ -47,8 +45,6 @@ export async function initializeApolloServer(): Promise<ApolloServer<Context>> {
       ApolloServerPluginCacheControl({ defaultMaxAge: 3600 }),
     ],
     resolvers: {
-      FeatureItem: featureItemResolver,
-      FeatureSection: featureSectionResolver,
       Mutation: mutationResolver,
       Order: orderResolver,
       Product: productResolver,
