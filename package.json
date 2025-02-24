@@ -15,7 +15,7 @@
     "seed": "npm-run-all -s clear:database seed:database",
     "seed:database": "cross-env SEED_BASE_UNIXTIME=1677855600 ts-node tools/seed.ts",
     "clear:database": "rm -f ./databases/database.sqlite",
-    "typeorm":"typeorm -r ts-node/register"
+    "typeorm": "typeorm -r ts-node/register"
   },
   "dependencies": {
     "@apollo/client": "3.8.0-alpha.7",
@@ -25,6 +25,7 @@
     "@js-temporal/polyfill": "0.4.3",
     "@koa/router": "12.0.0",
     "@types/koa-session": "5.10.6",
+    "apollo-server-caching": "3.3.0",
     "apollo-server-core": "3.13.0",
     "bcrypt": "5.1.0",
     "canvaskit-wasm": "0.38.0",

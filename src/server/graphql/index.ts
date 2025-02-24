@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 
 import { ApolloServer } from '@apollo/server';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { InMemoryLRUCache } from 'apollo-server-caching';
 
 import type { Context } from '../context';
 import { rootResolve } from '../utils/root_resolve';
@@ -56,6 +57,7 @@ export async function initializeApolloServer(): Promise<ApolloServer<Context>> {
       User: userResolver,
     },
     typeDefs,
+    cache: new InMemoryLRUCache(), // インメモリキャッシュを追加
   });
 
   return server;
