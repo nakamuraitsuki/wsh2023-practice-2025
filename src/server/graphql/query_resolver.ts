@@ -21,6 +21,7 @@ export const queryResolver: QueryResolver = {
       .createQueryBuilder(FeatureSection, 'section')
       .leftJoinAndSelect('section.items', 'item') // LEFT JOINに変更
       .leftJoinAndSelect('item.product', 'product') // LEFT JOINに変更
+      .leftJoinAndSelect('product.offers', 'offer') // LEFT JOINに変更
       .leftJoinAndSelect('product.media', 'media') // LEFT JOINに変更
       .leftJoinAndSelect('media.file', 'file') // LEFT JOINに変更
       .where('media.isThumbnail = :isThumbnail', { isThumbnail: true }) // isThumbnailがtrueのものだけを取得
@@ -47,6 +48,7 @@ export const queryResolver: QueryResolver = {
     const res = await dataSource.manager
       .createQueryBuilder(Recommendation, 'recommendation')
       .innerJoinAndSelect('recommendation.product', 'product')  // RecommendationとProductをINNER JOIN
+      .innerJoinAndSelect('product.offers', 'offer')  // ProductとOfferをINNER JOIN
       .innerJoinAndSelect('product.media', 'media')  // ProductとMediaをINNER JOIN
       .innerJoinAndSelect('media.file', 'file')  // MediaとFileをINNER JOIN
       .getMany();  // Recommendationとその関連データを取得  
