@@ -1,38 +1,32 @@
-import { useLazyQuery } from '@apollo/client';
-import { useEffect } from 'react';
-import { useErrorHandler } from 'react-error-boundary';
+import { useLazyQuery } from "@apollo/client";
+import { useEffect } from "react";
+import { useErrorHandler } from "react-error-boundary";
 
-import type { GetProductReviewsQueryResponse } from '../graphql/queries';
-import { GetProductReviewsQuery } from '../graphql/queries';
+import type { GetProductReviewsQueryResponse } from "../graphql/queries";
+import { GetProductReviewsQuery } from "../graphql/queries";
 
 export const useReviews = (productId: number | undefined) => {
   const handleError = useErrorHandler();
 
-  // useLazyQueryで初期化
+  // useLazyQueryで初期化（最初はクエリを実行しない）
   const [loadReviews, reviewsResult] = useLazyQuery<GetProductReviewsQueryResponse>(GetProductReviewsQuery, {
     onError: handleError,
-    variables: {
-      productId,
-    },
   });
 
   useEffect(() => {
-    // productIdがundefinedでない場合のみクエリを実行
     if (productId === undefined) {
-      return;  // productIdがundefinedなら処理を終了
+      return; // productIdがundefinedなら処理を終了
     }
 
-    // サーバー負荷が懸念される場合に少し待機
+    // 1000ms後にクエリを実行
     const timer = setTimeout(() => {
-      loadReviews();
+      loadReviews({ variables: { productId } });
     }, 1000);
 
     return () => {
-      clearTimeout(timer);  // クリーンアップ
+      clearTimeout(timer); // クリーンアップ
     };
-  }, [loadReviews, productId]);  // productIdが変化したときに再実行
+  }, [productId, loadReviews]); // productIdが変わったら再実行
 
-  const reviews = reviewsResult.data?.product.reviews;
-
-  return { reviews };
+  return { reviews: reviewsResult.data?.product.reviews };
 };
