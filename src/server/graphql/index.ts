@@ -45,7 +45,7 @@ export async function initializeApolloServer(): Promise<ApolloServer<Context>> {
     plugins: [
       ApolloServerPluginLandingPageLocalDefault({ includeCookies: true }),
       ApolloServerPluginCacheControl({
-        defaultMaxAge: 3600,
+        defaultMaxAge: 86400,
         calculateHttpHeaders: true,
       }),
       responseCachePlugin(),
