@@ -1,8 +1,8 @@
-import type { FC, ReactNode } from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { throttle } from 'throttle-debounce';
+import type { FC, ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
+import { throttle } from "throttle-debounce";
 
-import * as styles from './AspectRatio.styles';
+import * as styles from "./AspectRatio.styles";
 
 type Props = {
   ratioWidth: number;
@@ -21,15 +21,14 @@ export const AspectRatio: FC<Props> = ({ children, ratioHeight, ratioWidth }) =>
       setClientHeight(height);
     });
 
-    let timer = (function tick() {
-      return setImmediate(() => {
-        updateClientHeight();
-        timer = tick();
-      });
-    })();
+    // 初回実行
+    updateClientHeight();
+
+    // リサイズ時に高さを再計算
+    window.addEventListener("resize", updateClientHeight);
 
     return () => {
-      clearImmediate(timer);
+      window.removeEventListener("resize", updateClientHeight);
     };
   }, [ratioHeight, ratioWidth]);
 

@@ -1,8 +1,8 @@
-import type { FC, ReactNode } from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { throttle } from 'throttle-debounce';
+import type { FC, ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
+import { throttle } from "throttle-debounce";
 
-import * as styles from './WidthRestriction.styles';
+import * as styles from "./WidthRestriction.styles";
 
 type Props = {
   children: ReactNode;
@@ -17,19 +17,17 @@ export const WidthRestriction: FC<Props> = ({ children }) => {
   useEffect(() => {
     const updateClientWidth = throttle(1000, () => {
       const width = containerRef.current?.getBoundingClientRect().width ?? 0;
-      // 横幅を最大 1024px にする
-      setClientWidth(Math.min(width, 1024));
+      setClientWidth(Math.min(width, 1024)); // 最大 1024px に制限
     });
 
-    let timer = (function tick() {
-      return setImmediate(() => {
-        updateClientWidth();
-        timer = tick();
-      });
-    })();
+    // 初回実行
+    updateClientWidth();
+
+    // リサイズイベントで更新
+    window.addEventListener("resize", updateClientWidth);
 
     return () => {
-      clearImmediate(timer);
+      window.removeEventListener("resize", updateClientWidth);
     };
   }, []);
 

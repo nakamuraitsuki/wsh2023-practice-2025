@@ -17,15 +17,14 @@ export const useSlider = ({ items }: { items: unknown[] }) => {
       });
     });
 
-    let timer = (function tick() {
-      return setImmediate(() => {
-        updateVisibleItemCount();
-        timer = tick();
-      });
-    })();
+    // 初回実行
+    updateVisibleItemCount();
+
+    // リサイズイベントで更新
+    window.addEventListener('resize', updateVisibleItemCount);
 
     return () => {
-      clearImmediate(timer);
+      window.removeEventListener('resize', updateVisibleItemCount);
     };
   }, []);
 
