@@ -6,7 +6,7 @@ enum CacheControlScope {
 }
 
 type Query {
-  product(id: Int!): Product!
+  product(id: Int!): Product! @cacheControl(maxAge: 86400)
   recommendations: [Recommendation!]! @cacheControl(maxAge: 86400)
   features: [FeatureSection!]! @cacheControl(maxAge: 86400)  
   user(id: Int!): User!

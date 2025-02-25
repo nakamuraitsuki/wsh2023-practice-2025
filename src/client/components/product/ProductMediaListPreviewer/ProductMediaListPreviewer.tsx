@@ -1,6 +1,7 @@
+import React from 'react';
 import classNames from 'classnames';
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 import type { ProductFragmentResponse } from '../../../graphql/fragments';
 import { AspectRatio } from '../../foundation/AspectRatio';
@@ -8,6 +9,8 @@ import { AspectRatio } from '../../foundation/AspectRatio';
 import { MediaItem } from './MediaItem';
 import { MediaItemPreviewer } from './MediaItemPreviewer';
 import * as styles from './ProductMediaListPreviewer.styles';
+
+const MemoizedAspectRatio = React.memo(AspectRatio);
 
 type Props = {
   product: ProductFragmentResponse | undefined;
@@ -20,29 +23,37 @@ export const ProductMediaListPreviewer: FC<Props> = ({ product }) => {
     return null;
   }
 
+  const mediaList = useMemo(() => product.media, [product]);
+  const activeFile = useMemo(() => mediaList[activeIndex].file, [activeIndex, mediaList]);
+
+  const handleClick = (index: number) => {
+    if (index !== activeIndex) {
+      setActiveIndex(index);
+    }
+  };
+
   return (
     <div className={styles.container()}>
-      <AspectRatio ratioHeight={9} ratioWidth={16}>
-        <MediaItemPreviewer file={product.media[activeIndex].file} />
-      </AspectRatio>
+      <MemoizedAspectRatio ratioHeight={9} ratioWidth={16}>
+        <MediaItemPreviewer file={activeFile} />
+      </MemoizedAspectRatio>
       <div className={styles.itemListWrapper()}>
         <ul className={styles.itemList()}>
-          {product.media.map((media, index) => {
+          {mediaList.map((media, index) => {
             const disabled = index === activeIndex;
+            const buttonClass = useMemo(() => 
+              classNames(styles.itemSelectButton(), { 
+                [styles.itemSelectButton__disabled()]: disabled 
+              }), [disabled]
+            );
 
             return (
               <li key={media.id} className={styles.item()}>
-                <AspectRatio ratioHeight={1} ratioWidth={1}>
-                  <button
-                    className={classNames(styles.itemSelectButton(), {
-                      [styles.itemSelectButton__disabled()]: disabled,
-                    })}
-                    disabled={disabled}
-                    onClick={() => setActiveIndex(index)}
-                  >
+                <MemoizedAspectRatio ratioHeight={1} ratioWidth={1}>
+                  <button className={buttonClass} disabled={disabled} onClick={() => handleClick(index)}>
                     <MediaItem file={media.file} />
                   </button>
-                </AspectRatio>
+                </MemoizedAspectRatio>
               </li>
             );
           })}
