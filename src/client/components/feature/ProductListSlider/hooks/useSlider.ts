@@ -17,10 +17,15 @@ export const useSlider = ({ items }: { items: unknown[] }) => {
       });
     });
 
-    const timer = setInterval(updateVisibleItemCount, 500);
+    let timer = (function tick() {
+      return setImmediate(() => {
+        updateVisibleItemCount();
+        timer = tick();
+      });
+    })();
 
     return () => {
-      clearInterval(timer);
+      clearImmediate(timer);
     };
   }, []);
 
