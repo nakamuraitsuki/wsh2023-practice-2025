@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, ReactNode } from "react";
 
 export const DeviceType = {
   DESKTOP: "DESKTOP",
@@ -7,7 +7,7 @@ export const DeviceType = {
 export type DeviceType = (typeof DeviceType)[keyof typeof DeviceType];
 
 type Props = {
-  children: ({ deviceType }: { deviceType: DeviceType }) => ReactNode;
+  children: (props: { deviceType: DeviceType }) => ReactNode;
 };
 
 export const GetDeviceType = ({ children }: Props) => {
@@ -26,5 +26,5 @@ export const GetDeviceType = ({ children }: Props) => {
     };
   }, []);
 
-  return children({ deviceType });
+  return <>{children({ deviceType })}</>;  // JSXとして返す
 };
