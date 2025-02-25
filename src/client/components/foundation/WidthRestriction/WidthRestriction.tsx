@@ -21,15 +21,10 @@ export const WidthRestriction: FC<Props> = ({ children }) => {
       setClientWidth(Math.min(width, 1024));
     });
 
-    let timer = (function tick() {
-      return setImmediate(() => {
-        updateClientWidth();
-        timer = tick();
-      });
-    })();
+    const timer = setInterval(updateClientWidth, 1000); // 1000ミリ秒ごとに更新
 
     return () => {
-      clearImmediate(timer);
+      clearInterval(timer); // コンポーネントがアンマウントされる時にタイマーをクリア
     };
   }, []);
 
