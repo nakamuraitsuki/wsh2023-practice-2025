@@ -10,6 +10,11 @@ export const initializeDatabase = async () => {
 
     const db = new sqlite3.Database(DATABASE_PATH);
 
+    // WALモードに設定
+    db.run('PRAGMA journal_mode = WAL;', (err) => {
+      if (err) console.error('Error setting WAL mode:', err);
+    });
+
     // トランザクション開始
     await new Promise<void>((resolve, reject) => {
       db.run('BEGIN TRANSACTION;', (err) => {

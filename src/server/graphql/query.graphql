@@ -1,14 +1,7 @@
-directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION
-
-enum CacheControlScope {
-  PUBLIC
-  PRIVATE
-}
-
 type Query {
-  product(id: Int!): Product! @cacheControl(maxAge: 86400)
-  recommendations: [Recommendation!]! @cacheControl(maxAge: 86400)
-  features: [FeatureSection!]! @cacheControl(maxAge: 86400)  
+  product(id: Int!): Product!
+  recommendations: [Recommendation!]!
+  features: [FeatureSection!]!
   user(id: Int!): User!
   me: User
 }
