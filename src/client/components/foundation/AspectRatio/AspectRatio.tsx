@@ -21,15 +21,10 @@ export const AspectRatio: FC<Props> = ({ children, ratioHeight, ratioWidth }) =>
       setClientHeight(height);
     });
 
-    let timer = (function tick() {
-      return setImmediate(() => {
-        updateClientHeight();
-        timer = tick();
-      });
-    })();
+    const timer = setInterval(updateClientHeight, 1000); // 1000ミリ秒ごとに更新
 
     return () => {
-      clearImmediate(timer);
+      clearInterval(timer); // コンポーネントがアンマウントされる時にタイマーをクリア
     };
   }, [ratioHeight, ratioWidth]);
 
