@@ -2,9 +2,11 @@ import fs from 'node:fs/promises';
 
 import { ApolloServer } from '@apollo/server';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { ApolloServerPluginCacheControl } from '@apollo/server/plugin/cacheControl';
 
 import type { Context } from '../context';
 import { rootResolve } from '../utils/root_resolve';
+import Keyv from 'keyv';
 
 import { featureItemResolver } from './feature_item_resolver';
 import { featureSectionResolver } from './feature_section_resolver';
@@ -18,6 +20,31 @@ import { recommendationResolver } from './recommendation_resolver';
 import { reviewResolver } from './review_resolver';
 import { shoppingCartItemResolver } from './shopping_cart_item_resolver';
 import { userResolver } from './user_resolver';
+
+import { KeyValueCache, KeyValueCacheSetOptions } from '@apollo/utils.keyvaluecache';
+
+class KeyvAdapter implements KeyValueCache<string> {
+  private keyv: Keyv<string>;
+
+  constructor(keyvInstance?: Keyv<string>) {
+    this.keyv = keyvInstance ?? new Keyv(); // メモリキャッシュをデフォルトに
+  }
+
+  async get(key: string): Promise<string | undefined> {
+    return await this.keyv.get(key);
+  }
+
+  async set(key: string, value: string, options?: KeyValueCacheSetOptions): Promise<void> {
+    const ttl = options?.ttl ? options.ttl * 1000 : undefined; // Apolloは秒単位だが、Keyvはミリ秒
+    await this.keyv.set(key, value, ttl);
+  }
+
+  async delete(key: string): Promise<boolean> {
+    return await this.keyv.delete(key);
+  }
+}
+
+const keyvInstance = new Keyv();
 
 export async function initializeApolloServer(): Promise<ApolloServer<Context>> {
   const typeDefs = await Promise.all(
@@ -40,7 +67,10 @@ export async function initializeApolloServer(): Promise<ApolloServer<Context>> {
   );
 
   const server = new ApolloServer({
-    plugins: [ApolloServerPluginLandingPageLocalDefault({ includeCookies: true })],
+    plugins: [
+      ApolloServerPluginLandingPageLocalDefault({ includeCookies: true }),
+      ApolloServerPluginCacheControl({ defaultMaxAge: 3600 }), // これを使ってキャッシュ制御
+    ],
     resolvers: {
       FeatureItem: featureItemResolver,
       FeatureSection: featureSectionResolver,
@@ -56,6 +86,7 @@ export async function initializeApolloServer(): Promise<ApolloServer<Context>> {
       User: userResolver,
     },
     typeDefs,
+    cache: new KeyvAdapter(keyvInstance),  // メモリキャッシュを追加
   });
 
   return server;
