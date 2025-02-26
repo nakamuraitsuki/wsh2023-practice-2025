@@ -3,7 +3,9 @@ import type { GetRecommendationsQueryResponse } from '../graphql/queries';
 import { GetRecommendationsQuery } from '../graphql/queries';
 
 export const useRecommendation = () => {
-  const recommendationsResult = useQuery<GetRecommendationsQueryResponse>(GetRecommendationsQuery);
+  const recommendationsResult = useQuery<GetRecommendationsQueryResponse>(GetRecommendationsQuery, {
+    fetchPolicy: 'cache-first',
+  });
 
   const hour = new Date().getHours();
   const recommendations = recommendationsResult?.data?.recommendations;

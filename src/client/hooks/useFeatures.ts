@@ -3,7 +3,9 @@ import type { GetFeatureSectionsQueryResponse } from '../graphql/queries';
 import { GetFeatureSectionsQuery } from '../graphql/queries';
 
 export const useFeatures = () => {
-  const { data, loading, error } = useQuery<GetFeatureSectionsQueryResponse>(GetFeatureSectionsQuery);
+  const { data, loading, error } = useQuery<GetFeatureSectionsQueryResponse>(GetFeatureSectionsQuery, {
+    fetchPolicy: 'cache-first',
+  });
 
   if (loading) {
     // ローディング中の処理（例：スピナー表示など）
