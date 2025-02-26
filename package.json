@@ -21,6 +21,7 @@
     "@apollo/client": "3.8.0-alpha.7",
     "@apollo/server": "4.3.0",
     "@apollo/server-plugin-response-cache": "4.1.4",
+    "@apollo/utils.keyvaluecache": "3.1.0",
     "@as-integrations/koa": "0.2.1",
     "@emotion/css": "11.10.5",
     "@js-temporal/polyfill": "0.4.3",
