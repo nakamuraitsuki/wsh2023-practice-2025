@@ -3,12 +3,13 @@ import type { LimitedTimeOfferFragmentResponse } from '../graphql/fragments';
 export function getActiveOffer(
   offers: LimitedTimeOfferFragmentResponse[],
 ): LimitedTimeOfferFragmentResponse | undefined {
-  const activeOffer = offers.find((offer) => {
-    const now = window.Temporal.Now.instant();
-    const startDate = window.Temporal.Instant.from(offer.startDate);
-    const endDate = window.Temporal.Instant.from(offer.endDate);
+  const now = new Date(); // Temporal を使わずに現在の日時を取得
 
-    return window.Temporal.Instant.compare(startDate, now) < 0 && window.Temporal.Instant.compare(now, endDate) < 0;
+  const activeOffer = offers.find((offer) => {
+    const startDate = new Date(offer.startDate);
+    const endDate = new Date(offer.endDate);
+
+    return startDate < now && now < endDate;
   });
 
   return activeOffer;
