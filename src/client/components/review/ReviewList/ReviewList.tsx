@@ -37,7 +37,6 @@ export const ReviewList: FC<Props> = ({ reviews }) => {
                   height={52} 
                   src={getWebpImageSrc(review.user.profile.avatar.filename)} 
                   width={52} 
-                  loading='lazy'
                   decoding="async"
                   sizes="224px"
                 />
