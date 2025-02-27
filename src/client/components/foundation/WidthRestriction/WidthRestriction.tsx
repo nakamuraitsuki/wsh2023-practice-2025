@@ -32,8 +32,17 @@ export const WidthRestriction: FC<Props> = ({ children }) => {
   }, []);
 
   return (
-    <div ref={containerRef} className={styles.container()}>
-      <div className={styles.inner({ width: clientWidth })}>{isReady ? children : null}</div>
+    <div
+      ref={containerRef}
+      className={styles.container()}
+      style={{
+        width: "100%", // 横幅100%
+        height: isReady ? "auto" : "56.25vw", // aspect-ratio 16:9 => 9 / 16 = 0.5625 -> 高さに反映
+      }}
+    >
+      <div className={styles.inner({ width: clientWidth })}>
+        {isReady ? children : null}
+      </div>
     </div>
   );
 };

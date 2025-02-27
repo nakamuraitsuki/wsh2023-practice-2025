@@ -1,7 +1,10 @@
 import { css } from '@emotion/css';
 
 export const Anchor_container = () => css`
+  display: block;
   text-decoration: none;
+  width: 100%;
+  aspect-ratio: 16 / 9;
 `;
 
 export const container = () => css`
