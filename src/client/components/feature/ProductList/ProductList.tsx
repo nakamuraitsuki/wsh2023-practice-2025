@@ -24,7 +24,7 @@ export const ProductList: FC<Props> = memo(({ featureSection }) => {
           }
           case DeviceType.MOBILE: {
             return (
-              <div style={{ minHeight: '230px' }}>
+              <div>
                 <ProductGridList featureSection={featureSection} />
               </div>
             )
