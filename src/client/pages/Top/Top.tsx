@@ -23,7 +23,7 @@ export const Top: FC = () => {
 
   return (
     <Layout>
-      <div>
+      <div style={{minHeight: "3400px"}}>
         <ProductHeroImage product={recommendation.product} title="今週のオススメ" />
 
         <div className={styles.featureList()}>

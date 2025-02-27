@@ -10,7 +10,9 @@ export const container = () => css`
   transition-duration: 300ms;
   transition-property: opacity;
   transition-timing-function: linear;
-
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  min-heiht: 200px;
   &:hover {
     opacity: 0.8;
   }
