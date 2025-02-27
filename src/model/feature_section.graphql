@@ -1,4 +1,4 @@
-type FeatureSection @cacheControl(maxAge: 86400){
+type FeatureSection {
   id: Int!
   title: String!
   items: [FeatureItem!]!
