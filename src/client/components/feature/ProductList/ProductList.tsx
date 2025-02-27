@@ -16,10 +16,18 @@ export const ProductList: FC<Props> = memo(({ featureSection }) => {
       {({ deviceType }) => {
         switch (deviceType) {
           case DeviceType.DESKTOP: {
-            return <ProductListSlider featureSection={featureSection} />;
+            return (
+              <div style={{ minHeight: '206px' }}>
+                <ProductListSlider featureSection={featureSection} />
+              </div>
+            );
           }
           case DeviceType.MOBILE: {
-            return <ProductGridList featureSection={featureSection} />;
+            return (
+              <div style={{ minHeight: '230px' }}>
+                <ProductGridList featureSection={featureSection} />
+              </div>
+            )
           }
         }
       }}
