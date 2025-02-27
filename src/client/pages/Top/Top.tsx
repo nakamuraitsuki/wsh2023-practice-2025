@@ -9,7 +9,7 @@ import { useRecommendation } from '../../hooks/useRecommendation';
 
 import * as styles from './Top.styles';
 
-const Top: FC = () => {
+export const Top: FC = () => {
   const { recommendation } = useRecommendation();
   const { features } = useFeatures();
 
@@ -40,5 +40,3 @@ const Top: FC = () => {
     </Layout>
   );
 };
-
-export default Top;
