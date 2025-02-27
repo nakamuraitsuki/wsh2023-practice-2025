@@ -1,28 +1,23 @@
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Layout } from '../../components/application/Layout';
-import { loadFonts } from '../../utils/load_fonts';
-
 import * as styles from './NotFound.styles';
 
 export const NotFound: FC = () => {
-  const [isReady, setIsReady] = useState(false);
-
   useEffect(() => {
-    const load = async () => {
-      await loadFonts();
-      setIsReady(true);
-    };
-
-    load();
-
     // ページタイトルを設定
     document.title = 'ページが見つかりませんでした';
-  }, []);
 
-  if (!isReady) {
-    return null;
-  }
+    // フォントを動的にロード
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
 
   return (
     <Layout>
