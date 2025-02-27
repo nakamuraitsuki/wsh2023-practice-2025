@@ -14,7 +14,7 @@ import { useRecommendation } from '../../hooks/useRecommendation';
 
 import * as styles from './OrderComplete.styles';
 
-const OrderComplete: FC = () => {
+export const OrderComplete: FC = () => {
   const navigate = useNavigate();
   const { authUserLoading, isAuthUser } = useAuthUser();
   const { recommendation } = useRecommendation();
@@ -81,5 +81,3 @@ const OrderComplete: FC = () => {
     </Layout>
   );
 };
-
-export default OrderComplete;

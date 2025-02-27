@@ -30,5 +30,3 @@ export const NotFound: FC = () => {
     </Layout>
   );
 };
-
-export default NotFound;

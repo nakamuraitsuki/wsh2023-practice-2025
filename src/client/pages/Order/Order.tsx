@@ -13,7 +13,7 @@ import { useUpdateCartItem } from '../../hooks/useUpdateCartItems';
 
 import * as styles from './Order.styles';
 
-const Order: FC = () => {
+export const Order: FC = () => {
   const navigate = useNavigate();
 
   const { authUser, authUserLoading, isAuthUser } = useAuthUser();
@@ -93,5 +93,3 @@ const Order: FC = () => {
     </Layout>
   );
 };
-
-export default Order;
