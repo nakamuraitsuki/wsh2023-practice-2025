@@ -26,13 +26,8 @@ export const ProductCard: FC<Props> = React.memo(({ product, index }) => {
   const thumbnailFileNames = useMemo(() => {
     if (!thumbnailFile?.filename) return null;
 
-    const baseName = thumbnailFile.filename.replace(/\.(jpg|jpeg|png|webp)$/i, '');
-    return {
-      default: `${baseName}-960w.webp`,
-      srcSet: `${baseName}-240w.webp 240w, 
-               ${baseName}-960w.webp 960w, 
-               ${baseName}-1440w.webp 1440w`,
-    };
+    return thumbnailFile.filename.replace(/\.(jpg|jpeg|png|webp)$/i, '-240w.webp');
+
   }, [thumbnailFile]);
 
   const { activeOffer } = useActiveOffer(product);
@@ -51,8 +46,7 @@ export const ProductCard: FC<Props> = React.memo(({ product, index }) => {
               width={224} 
               decoding="async" 
               loading={shouldEagerLoad ? 'eager' : 'lazy'}
-              src={thumbnailFileNames.default}
-              srcSet={thumbnailFileNames.srcSet}
+              src={thumbnailFileNames}
               sizes="224px"
               alt={product.name}
             />
