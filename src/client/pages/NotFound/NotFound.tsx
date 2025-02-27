@@ -1,7 +1,5 @@
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
-
 import { Layout } from '../../components/application/Layout';
 import { loadFonts } from '../../utils/load_fonts';
 
@@ -17,6 +15,9 @@ export const NotFound: FC = () => {
     };
 
     load();
+
+    // ページタイトルを設定
+    document.title = 'ページが見つかりませんでした';
   }, []);
 
   if (!isReady) {
@@ -24,18 +25,13 @@ export const NotFound: FC = () => {
   }
 
   return (
-    <>
-      <Helmet>
-        <title>ページが見つかりませんでした</title>
-      </Helmet>
-      <Layout>
-        <div className={styles.container()}>
-          <div className={styles.inner()}>
-            <p className={styles.mainParagraph()}>ページが存在しません</p>
-            <p className={styles.subParagraph()}>Not Found</p>
-          </div>
+    <Layout>
+      <div className={styles.container()}>
+        <div className={styles.inner()}>
+          <p className={styles.mainParagraph()}>ページが存在しません</p>
+          <p className={styles.subParagraph()}>Not Found</p>
         </div>
-      </Layout>
-    </>
+      </div>
+    </Layout>
   );
 };

@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 
 import { Layout } from '../../components/application/Layout';
@@ -26,6 +25,9 @@ export const OrderComplete: FC = () => {
     loadFonts().then(() => {
       setIsReadyFont(true);
     });
+
+    // ページタイトルを設定
+    document.title = '購入が完了しました';
   }, []);
 
   if (!recommendation || !isReadyFont || authUserLoading) {
@@ -37,46 +39,41 @@ export const OrderComplete: FC = () => {
   }
 
   return (
-    <>
-      <Helmet>
-        <title>購入が完了しました</title>
-      </Helmet>
-      <Layout>
-        <GetDeviceType>
-          {({ deviceType }) => (
-            <WidthRestriction>
-              <div className={styles.container()}>
-                <div className={styles.notice()}>
-                  <h2 className={styles.noticeHeading()}>購入が完了しました</h2>
-                  <AspectRatio ratioHeight={1} ratioWidth={2}>
-                    <div className={styles.noticeDescriptionWrapper()}>
-                      <p
-                        className={classNames(styles.noticeDescription(), {
-                          [styles.noticeDescription__desktop()]: deviceType === DeviceType.DESKTOP,
-                          [styles.noticeDescription__mobile()]: deviceType === DeviceType.MOBILE,
-                        })}
-                      >
-                        このサイトは架空のサイトであり、商品が発送されることはありません
-                      </p>
-                    </div>
-                  </AspectRatio>
-                </div>
-
-                <div className={styles.recommended()}>
-                  <h2 className={styles.recommendedHeading()}>こちらの商品もオススメです</h2>
-                  <ProductHeroImage product={recommendation.product} title={recommendation.product.name} />
-                </div>
-
-                <div className={styles.backToTopButtonWrapper()}>
-                  <PrimaryAnchor href="/" size="lg">
-                    トップへ戻る
-                  </PrimaryAnchor>
-                </div>
+    <Layout>
+      <GetDeviceType>
+        {({ deviceType }) => (
+          <WidthRestriction>
+            <div className={styles.container()}>
+              <div className={styles.notice()}>
+                <h2 className={styles.noticeHeading()}>購入が完了しました</h2>
+                <AspectRatio ratioHeight={1} ratioWidth={2}>
+                  <div className={styles.noticeDescriptionWrapper()}>
+                    <p
+                      className={classNames(styles.noticeDescription(), {
+                        [styles.noticeDescription__desktop()]: deviceType === DeviceType.DESKTOP,
+                        [styles.noticeDescription__mobile()]: deviceType === DeviceType.MOBILE,
+                      })}
+                    >
+                      このサイトは架空のサイトであり、商品が発送されることはありません
+                    </p>
+                  </div>
+                </AspectRatio>
               </div>
-            </WidthRestriction>
-          )}
-        </GetDeviceType>
-      </Layout>
-    </>
+
+              <div className={styles.recommended()}>
+                <h2 className={styles.recommendedHeading()}>こちらの商品もオススメです</h2>
+                <ProductHeroImage product={recommendation.product} title={recommendation.product.name} />
+              </div>
+
+              <div className={styles.backToTopButtonWrapper()}>
+                <PrimaryAnchor href="/" size="lg">
+                  トップへ戻る
+                </PrimaryAnchor>
+              </div>
+            </div>
+          </WidthRestriction>
+        )}
+      </GetDeviceType>
+    </Layout>
   );
 };
