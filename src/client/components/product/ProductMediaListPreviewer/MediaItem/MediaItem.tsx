@@ -12,7 +12,7 @@ type Props = {
 };
 
 const getWebpImageSrc = (filename: string) => {
-  return filename.replace(/\.(jpg|jpeg|png|gif)$/i, '-480w.webp');
+  return filename.replace(/\.(jpg|jpeg|png|gif)$/i, '-240w.webp');
 };
 
 const getThumbnailSrc = (filename: string) => {

@@ -15,7 +15,7 @@ export const useProduct = (productId: number) => {
   const product = productResult.data?.product;
 
   const getWebpImageSrc = (filename: string) => filename.replace(/\.(jpg|jpeg|png|gif)$/i, '.webp');
-  const getWebpImageSrc480 = (filename: string) => filename.replace(/\.(jpg|jpeg|png|gif)$/i, '-480w.webp');
+  const getWebpImageSrc240 = (filename: string) => filename.replace(/\.(jpg|jpeg|png|gif)$/i, '-240w.webp');
 
   useEffect(() => {
     if (!product?.media) return;
@@ -26,7 +26,7 @@ export const useProduct = (productId: number) => {
         return [
           media.file.filename,
           getWebpImageSrc(media.file.filename),
-          getWebpImageSrc480(media.file.filename),
+          getWebpImageSrc240(media.file.filename),
         ];
       });
 

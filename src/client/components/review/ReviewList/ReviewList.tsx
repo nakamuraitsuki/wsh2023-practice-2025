@@ -12,7 +12,7 @@ const getWebpImageSrc = (filename: string) => {
   const baseName = filename.replace(/\.(jpg|jpeg|png|gif)$/i, '');
   return {
     default: `${baseName}-960w.webp`,
-    srcSet: `${baseName}-480w.webp 480w, 
+    srcSet: `${baseName}-240w.webp 240w, 
              ${baseName}-960w.webp 960w, 
              ${baseName}-1440w.webp 1440w`,
   };
