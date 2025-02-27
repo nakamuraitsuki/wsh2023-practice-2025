@@ -3,7 +3,6 @@ import type { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { DeviceType, GetDeviceType } from '../../foundation/GetDeviceType';
-import { Image } from '../../foundation/Image';
 
 import * as styles from './Footer.styles';
 
@@ -28,7 +27,7 @@ export const Footer: FC = () => {
               ))}
             </ul>
             <NavLink to="/">
-              <Image src="/icons/logo.svg"/>
+              <img width={205} height={32} src="/icons/logo.svg"/>
             </NavLink>
           </footer>
         );
