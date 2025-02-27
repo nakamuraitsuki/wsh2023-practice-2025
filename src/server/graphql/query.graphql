@@ -6,9 +6,9 @@ enum CacheControlScope {
 }
 
 type Query {
-  product(id: Int!): Product! @cacheControl(maxAge: 600) # 10分キャッシュ
-  recommendations: [Recommendation!]! @cacheControl(maxAge: 300) # 5分キャッシュ
-  features: [FeatureSection!]! @cacheControl(maxAge: 600) # 10分キャッシュ
-  user(id: Int!): User! @cacheControl(maxAge: 60, scope: PRIVATE) # 1分キャッシュ (プライベート)
+  product(id: Int!): Product! 
+  recommendations: [Recommendation!]! @cacheControl(maxAge: 86400) # 1日キャッシュ
+  features: [FeatureSection!]! @cacheControl(maxAge: 86400) # 1日キャッシュ
+  user(id: Int!): User! @cacheControl(maxAge: 86400, scope: PRIVATE) # 1日キャッシュ (プライベート)
   me: User # ログインユーザーごとに異なるのでキャッシュなし
 }
