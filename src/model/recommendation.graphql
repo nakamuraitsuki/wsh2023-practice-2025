@@ -1,4 +1,4 @@
-type Recommendation {
+type Recommendation @cacheControl(maxAge: 86400){
   id: Int!
   product: Product!
 }
