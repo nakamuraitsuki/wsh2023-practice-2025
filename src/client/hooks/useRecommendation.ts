@@ -15,5 +15,22 @@ export const useRecommendation = () => {
   }
 
   const recommendation = recommendations[hour % recommendations.length];
+
+  const thumbnailFile = recommendation.product.media.find((productMedia) => productMedia.isThumbnail)?.file;
+  const imageUrl = thumbnailFile?.filename.replace(/\.(jpg|jpeg|png)$/i, '.webp'); 
+
+  const preloadImage = (imageUrl: string) => {
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        const img = new Image();
+        img.src = imageUrl;
+      });
+    }
+  }
+
+  if (imageUrl) {
+    preloadImage(imageUrl);
+  }
+  
   return { recommendation };
 };
