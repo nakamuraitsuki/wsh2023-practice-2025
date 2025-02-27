@@ -24,7 +24,6 @@ export const useProduct = (productId: number) => {
       const urls = product.media.flatMap((media) => {
         if (!media.file.filename) return [];
         return [
-          media.file.filename,
           getWebpImageSrc(media.file.filename),
           getWebpImageSrc240(media.file.filename),
         ];
