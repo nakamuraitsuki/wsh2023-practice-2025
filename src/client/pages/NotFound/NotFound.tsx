@@ -6,7 +6,7 @@ import * as styles from './NotFound.styles';
 export const NotFound: FC = () => {
   useEffect(() => {
     // ページタイトルを設定
-    document.title = 'ページが見つかりませんでた';
+    document.title = 'ページが見つかりませんでした';
 
     // フォントを動的にロード
     const link = document.createElement('link');
