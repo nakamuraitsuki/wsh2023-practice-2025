@@ -1,5 +1,6 @@
 import type { Context } from '@apollo/client';
 import type { GraphQLFieldResolver } from 'graphql';
+import { cacheControlFromInfo } from '@apollo/cache-control-types';
 
 import { FeatureSection } from '../../model/feature_section';
 import { Product } from '../../model/product';
@@ -16,7 +17,9 @@ type QueryResolver = {
 };
 
 export const queryResolver: QueryResolver = {
-  features: async () => {
+  features: async (_parent, _args, _context, info) => {
+    const cacheControl = cacheControlFromInfo(info);
+    cacheControl.setCacheHint({ maxAge: 86400, scope: 'PUBLIC' });
     const res = await dataSource.manager
       .createQueryBuilder(FeatureSection, 'section')
       .leftJoinAndSelect('section.items', 'item') // LEFT JOINに変更
@@ -27,7 +30,6 @@ export const queryResolver: QueryResolver = {
       .getMany();  // FeatureSectionをその関連項目（FeatureItem, Product, Media, Offersなど）と一緒に取得
     return res;
   },  
-  
   me: async (_parent, _args, { session }) => {
     if (session['userId'] == null) {
       return null;
@@ -43,7 +45,9 @@ export const queryResolver: QueryResolver = {
       .where('product.id = :id', { id: args.id })
       .getOneOrFail();
   },  
-  recommendations: async() => {
+  recommendations: async(_parent, _args, _context, info) => {
+    const cacheControl = cacheControlFromInfo(info);
+    cacheControl.setCacheHint({ maxAge: 86400, scope: 'PUBLIC' });
     const res = await dataSource.manager
       .createQueryBuilder(Recommendation, 'recommendation')
       .innerJoinAndSelect('recommendation.product', 'product')  // RecommendationとProductをINNER JOIN
