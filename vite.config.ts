@@ -36,7 +36,7 @@ export default defineConfig(async () => {
             if (id.includes('@apollo/client')) {
               return 'apollo';
             }
-            if (id.includes('react') || id.includes('formik') || id.includes('lodash-es')) {
+            if (id.includes('react')) {
               return 'react';
             }
             if (id.includes('node_modules')) {

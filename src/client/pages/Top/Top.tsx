@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Helmet } from 'react-helmet';
+import { useEffect } from 'react';
 
 import { Layout } from '../../components/application/Layout';
 import { ProductList } from '../../components/feature/ProductList';
@@ -13,31 +13,30 @@ export const Top: FC = () => {
   const { recommendation } = useRecommendation();
   const { features } = useFeatures();
 
+  useEffect(() => {
+    document.title = '買えるオーガニック';
+  }, []); // コンポーネントが初めてレンダリングされるときにタイトルを変更
+
   if (recommendation === undefined || features === undefined) {
     return null;
   }
 
   return (
-    <>
-      <Helmet>
-        <title>買えるオーガニック</title>
-      </Helmet>
-      <Layout>
-        <div>
-          <ProductHeroImage product={recommendation.product} title="今週のオススメ" />
+    <Layout>
+      <div>
+        <ProductHeroImage product={recommendation.product} title="今週のオススメ" />
 
-          <div className={styles.featureList()}>
-            {features.map((featureSection) => {
-              return (
-                <div key={featureSection.id} className={styles.feature()}>
-                  <h2 className={styles.featureHeading()}>{featureSection.title}</h2>
-                  <ProductList featureSection={featureSection} />
-                </div>
-              );
-            })}
-          </div>
+        <div className={styles.featureList()}>
+          {features.map((featureSection) => {
+            return (
+              <div key={featureSection.id} className={styles.feature()}>
+                <h2 className={styles.featureHeading()}>{featureSection.title}</h2>
+                <ProductList featureSection={featureSection} />
+              </div>
+            );
+          })}
         </div>
-      </Layout>
-    </>
+      </div>
+    </Layout>
   );
 };
