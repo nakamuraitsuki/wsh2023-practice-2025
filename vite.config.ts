@@ -34,7 +34,18 @@ export default defineConfig(async () => {
           experimentalMinChunkSize: 40960,
           manualChunks(id) {
             if (id.includes('@apollo/client')) {
-              return 'apollo';
+              if (id.includes('core')) {
+                return 'apollo-core';
+              }
+
+              if (id.includes('react')) {
+                return 'apollo-react';
+              }
+              if (id.includes('utilities')) {
+                return 'apollo-utilities';
+              }
+              
+              return 'apollo-client';
             }
             if (id.includes('react') || id.includes('formik')) {
               return 'react';
