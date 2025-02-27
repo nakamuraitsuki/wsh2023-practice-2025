@@ -4,7 +4,6 @@ import { useAuthUser } from '../../../hooks/useAuthUser';
 import { useOpenModal } from '../../../store/modal';
 import { Anchor } from '../../foundation/Anchor';
 import { Icon } from '../../foundation/Icon';
-import { Image } from '../../foundation/Image';
 
 import * as styles from './Header.styles';
 
@@ -16,7 +15,7 @@ export const Header: FC = () => {
     <header className={styles.container()}>
       <Anchor href="/">
         <div className={styles.logo()}>
-          <Image src="/icons/logo.svg" />
+          <img width={205} height={32} src="/icons/logo.svg" />
         </div>
       </Anchor>
       {isAuthUser ? (
