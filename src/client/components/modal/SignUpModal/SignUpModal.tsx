@@ -20,7 +20,7 @@ export type SignUpForm = {
   password: string;
 };
 
-const SignUpModal: FC = () => {
+export const SignUpModal: FC = () => {
   const isOpened = useIsOpenModal('SIGN_UP');
   const { signUp } = useSignUp();
 
@@ -130,4 +130,3 @@ const SignUpModal: FC = () => {
   );
 };
 
-export default SignUpModal;
