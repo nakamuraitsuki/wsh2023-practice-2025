@@ -16,7 +16,7 @@ export type SignInForm = {
   password: string;
 };
 
-const SignInModal: FC = () => {
+export const SignInModal: FC = () => {
   const isOpened = useIsOpenModal('SIGN_IN');
   const { signIn } = useSignIn();
 
@@ -114,5 +114,3 @@ const SignInModal: FC = () => {
     </Modal>
   );
 };
-
-export default SignInModal;
