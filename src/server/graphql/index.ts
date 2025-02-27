@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import { ApolloServer } from '@apollo/server';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ApolloServerPluginCacheControl } from '@apollo/server/plugin/cacheControl';
+import responseCachePliugin from '@apollo/server-plugin-response-cache';
 
 import type { Context } from '../context';
 import { rootResolve } from '../utils/root_resolve';
@@ -43,7 +44,10 @@ export async function initializeApolloServer(): Promise<ApolloServer<Context>> {
   const server = new ApolloServer({
     plugins: [
       ApolloServerPluginLandingPageLocalDefault({ includeCookies: true }),
-      ApolloServerPluginCacheControl({ defaultMaxAge: 3600 }), // これを使ってキャッシュ制御
+      ApolloServerPluginCacheControl({
+        defaultMaxAge: 86400,
+      }), // これを使ってキャッシュ制御
+      responseCachePliugin(),
     ],
     resolvers: {
       FeatureItem: featureItemResolver,

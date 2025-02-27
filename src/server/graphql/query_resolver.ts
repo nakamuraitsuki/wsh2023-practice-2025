@@ -19,7 +19,7 @@ type QueryResolver = {
 export const queryResolver: QueryResolver = {
   features: async (_parent, _args, _context, info) => {
     const cacheControl = cacheControlFromInfo(info);
-    cacheControl.setCacheHint({ maxAge: 86400, scope: 'PUBLIC' });
+    cacheControl.setCacheHint({ maxAge: 86400 });
     const res = await dataSource.manager
       .createQueryBuilder(FeatureSection, 'section')
       .leftJoinAndSelect('section.items', 'item') // LEFT JOINに変更
