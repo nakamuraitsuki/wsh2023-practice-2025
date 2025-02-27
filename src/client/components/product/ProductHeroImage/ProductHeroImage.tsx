@@ -17,6 +17,21 @@ export const ProductHeroImage: FC<Props> = memo(({ product, title }) => {
   const thumbnailFile = product.media.find((productMedia) => productMedia.isThumbnail)?.file;
   const imageUrl = thumbnailFile?.filename.replace(/\.(jpg|jpeg|png)$/i, '.webp'); 
 
+  useEffect(() => {
+    if (!imageUrl) return;
+
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = imageUrl;
+    link.type = 'image/webp';
+    document.head.appendChild(link);
+
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, [imageUrl]);
+
   if (!imageUrl) {
     return null;
   }
