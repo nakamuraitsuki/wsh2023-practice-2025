@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client';
+import { useEffect } from 'react';
 import { useErrorHandler } from 'react-error-boundary';
 
 import type { GetProductDetailsQueryResponse } from '../graphql/queries';
@@ -8,12 +9,45 @@ export const useProduct = (productId: number) => {
   const handleError = useErrorHandler();
   const productResult = useQuery<GetProductDetailsQueryResponse>(GetProductDetailsQuery, {
     onError: handleError,
-    variables: {
-      productId,
-    },
+    variables: { productId },
   });
 
   const product = productResult.data?.product;
+
+  const getWebpImageSrc = (filename: string) => filename.replace(/\.(jpg|jpeg|png|gif)$/i, '.webp');
+  const getWebpImageSrc480 = (filename: string) => filename.replace(/\.(jpg|jpeg|png|gif)$/i, '-480w.webp');
+
+  useEffect(() => {
+    if (!product?.media) return;
+
+    const fetchImages = async () => {
+      const urls = product.media.flatMap((media) => {
+        if (!media.file.filename) return [];
+        return [
+          media.file.filename,
+          getWebpImageSrc(media.file.filename),
+          getWebpImageSrc480(media.file.filename),
+        ];
+      });
+
+      await Promise.all(
+        urls.map((url) => {
+          return new Promise<void>((resolve) => {
+            const img = new Image();
+            img.src = url;
+            img.onload = () => resolve();
+            img.onerror = () => resolve(); // 失敗しても続行
+          });
+        })
+      );
+    };
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(fetchImages);
+    } else {
+      setTimeout(fetchImages, 2000);
+    }
+  }, [product?.media]);
 
   return { product };
 };
