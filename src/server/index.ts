@@ -26,8 +26,8 @@ async function init(): Promise<void> {
   const httpServer = http.createServer(app.callback());
 
   // HTTP Keep-Alive タイムアウトの設定
-  httpServer.keepAliveTimeout = 4 * 1000; // 75秒
-  httpServer.headersTimeout = 5 * 1000; // 80秒
+  httpServer.keepAliveTimeout = 9 * 1000; 
+  httpServer.headersTimeout = 10 * 1000; 
   
 
   app.keys = ['cookie-key'];
