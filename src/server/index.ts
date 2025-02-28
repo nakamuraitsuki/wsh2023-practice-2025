@@ -77,7 +77,19 @@ async function init(): Promise<void> {
 
   // 静的ファイルの配信設定
   app.use(serve(rootResolve('dist'), { maxage: 86400000 })); // 1日キャッシュ
-  app.use(serve(rootResolve('public'), { maxage: 86400000 }));
+  app.use(route.get('/images/:filename', async (ctx, filename) => {
+    const imagePath = rootResolve(`public/images/${filename}`);
+  
+    try {
+      await send(ctx, imagePath, {
+        maxage: 30 * 24 * 60 * 60 * 1000, // 30日キャッシュ
+        immutable: true, 
+      });
+    } catch (error) {
+      ctx.status = 404;
+      ctx.body = 'Image not found';
+    }
+  }));
 
   // すべてのリクエストに対して、インデックスページを返す
   app.use(async (ctx) => await send(ctx, rootResolve('/dist/index.html')));
