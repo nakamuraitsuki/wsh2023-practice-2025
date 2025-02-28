@@ -32,11 +32,6 @@ async function init(): Promise<void> {
 
   app.keys = ['cookie-key'];
 
-  // 本番環境では logger を無効にするなど調整
-  if (process.env.NODE_ENV !== 'production') {
-    app.use(logger());
-  }
-
   // bodyParser の JSON のみパースを有効化
   app.use(bodyParser({ enableTypes: ['json'] }));
 
